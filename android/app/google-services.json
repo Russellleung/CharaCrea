@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1062313333608",
+    "project_id": "characrea-110c3",
+    "storage_bucket": "characrea-110c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062313333608:android:3f448a002b5f4ac9033cdd",
+        "android_client_info": {
+          "package_name": "com.example.characrea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062313333608-ss4pmjk3518gd75hirhkv7btjug284fc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe4jQWHzlvc9ccY9_593X1RmU2rzNxqyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062313333608-ss4pmjk3518gd75hirhkv7btjug284fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
