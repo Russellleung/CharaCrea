@@ -10,9 +10,11 @@ import 'pages/homepage.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ApplicationState(),
-      builder: (context, _) => App(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ApplicationState()),
+      ],
+      child: App(),
     ),
   );
 }

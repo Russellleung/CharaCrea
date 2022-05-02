@@ -9,27 +9,32 @@ import '../firebase_options.dart';
 import '../src/authentication.dart';
 import '../widgets/guestbookwidget.dart';
 import '../widgets/yesnowidget.dart';
+
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
 
   ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
+
   ApplicationLoginState get loginState => _loginState;
 
   String? _email;
+
   String? get email => _email;
 
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
   List<GuestBookMessage> _guestBookMessages = [];
+
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
   int _attendees = 0;
+
   int get attendees => _attendees;
   Attending _attending = Attending.unknown;
   StreamSubscription<DocumentSnapshot>? _attendingSubscription;
-  Attending get attending => _attending;
 
+  Attending get attending => _attending;
   StreamSubscription<QuerySnapshot>? _attendeesSubscription;
 
   Future<void> init() async {
@@ -37,11 +42,7 @@ class ApplicationState extends ChangeNotifier {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    _attendeesSubscription = FirebaseFirestore.instance
-        .collection('attendees')
-        .where('attending', isEqualTo: true)
-        .snapshots()
-        .listen((snapshot) {
+    _attendeesSubscription = FirebaseFirestore.instance.collection('attendees').where('attending', isEqualTo: true).snapshots().listen((snapshot) {
       _attendees = snapshot.docs.length;
       notifyListeners();
     });
@@ -49,12 +50,8 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loginState = ApplicationLoginState.loggedIn;
-        _guestBookSubscription = FirebaseFirestore.instance
-            .collection('guestbook')
-            .orderBy('timestamp', descending: true)
-            .limit(3)
-            .snapshots()
-            .listen((snapshot) {
+        _guestBookSubscription =
+            FirebaseFirestore.instance.collection('guestbook').orderBy('timestamp', descending: true).limit(3).snapshots().listen((snapshot) {
           _guestBookMessages = [];
           for (final document in snapshot.docs) {
             _guestBookMessages.add(
@@ -66,11 +63,7 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
-        _attendingSubscription = FirebaseFirestore.instance
-            .collection('attendees')
-            .doc(user.uid)
-            .snapshots()
-            .listen((snapshot) {
+        _attendingSubscription = FirebaseFirestore.instance.collection('attendees').doc(user.uid).snapshots().listen((snapshot) {
           if (snapshot.data() != null) {
             if (snapshot.data()!['attending'] as bool) {
               _attending = Attending.yes;
@@ -93,11 +86,8 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
-
   set attending(Attending attending) {
-    final userDoc = FirebaseFirestore.instance
-        .collection('attendees')
-        .doc(FirebaseAuth.instance.currentUser!.uid);
+    final userDoc = FirebaseFirestore.instance.collection('attendees').doc(FirebaseAuth.instance.currentUser!.uid);
     if (attending == Attending.yes) {
       userDoc.set(<String, dynamic>{'attending': true});
     } else {
@@ -110,9 +100,7 @@ class ApplicationState extends ChangeNotifier {
       throw Exception('Must be logged in');
     }
 
-    return FirebaseFirestore.instance
-        .collection('guestbook')
-        .add(<String, dynamic>{
+    return FirebaseFirestore.instance.collection('guestbook').add(<String, dynamic>{
       'text': message,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
@@ -126,12 +114,11 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> verifyEmail(
-      String email,
-      void Function(FirebaseAuthException e) errorCallback,
-      ) async {
+    String email,
+    void Function(FirebaseAuthException e) errorCallback,
+  ) async {
     try {
-      var methods =
-      await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+      var methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
       if (methods.contains('password')) {
         _loginState = ApplicationLoginState.password;
       } else {
@@ -145,10 +132,10 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> signInWithEmailAndPassword(
-      String email,
-      String password,
-      void Function(FirebaseAuthException e) errorCallback,
-      ) async {
+    String email,
+    String password,
+    void Function(FirebaseAuthException e) errorCallback,
+  ) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -164,14 +151,9 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> registerAccount(
-      String email,
-      String displayName,
-      String password,
-      void Function(FirebaseAuthException e) errorCallback) async {
+  Future<void> registerAccount(String email, String displayName, String password, void Function(FirebaseAuthException e) errorCallback) async {
     try {
-      var credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       await credential.user!.updateDisplayName(displayName);
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
