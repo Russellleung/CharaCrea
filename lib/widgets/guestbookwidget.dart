@@ -5,10 +5,7 @@ import 'package:provider/provider.dart';
 import '../provider/messageProvider.dart';
 
 class GuestBook extends StatefulWidget {
-  // const GuestBook({required this.addMessage, required this.messages});
-  //
-  // final FutureOr<void> Function(String message) addMessage;
-  // final List<GuestBookMessage> messages; // new
+  const GuestBook({Key? key}) : super(key: key);
 
   @override
   _GuestBookState createState() => _GuestBookState();

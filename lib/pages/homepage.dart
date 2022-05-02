@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/homeProvider.dart';
-import '../provider/messageProvider.dart';
 import '../src/authentication.dart';
 import '../widgets/guestbookwidget.dart';
 import '../widgets/widgets.dart';
@@ -18,12 +17,8 @@ class HomePage extends StatelessWidget {
     AttendProvider attendProvider = context.watch<AttendProvider>();
 
     int attendees = attendProvider.attendees;
-
-    List<GuestBookMessage> guestBookMessages = context.watch<MessageProvider>().guestBookMessages;
-
     ApplicationLoginState loginState = applicationVariableState.loginState;
 
-    ApplicationState applicationFunctionState = context.read<ApplicationState>();
     return Scaffold(
         appBar: AppBar(
           title: const Text('Firebase Meetup'),
