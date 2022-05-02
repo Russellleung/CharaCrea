@@ -37,6 +37,17 @@ class ApplicationState extends ChangeNotifier {
   Attending get attending => _attending;
   StreamSubscription<QuerySnapshot>? _attendeesSubscription;
 
+  User? _user;
+
+  User? get user => _user;
+
+  set user(User? user) {
+    _user = user;
+    notifyListeners();
+  }
+
+  //FirebaseAuth.instance.currentUser!.uid
+
   Future<void> init() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -46,35 +57,22 @@ class ApplicationState extends ChangeNotifier {
       _attendees = snapshot.docs.length;
       notifyListeners();
     });
+    _guestBookSubscription =
+        FirebaseFirestore.instance.collection('guestbook').orderBy('timestamp', descending: true).limit(3).snapshots().listen((snapshot) {
+      _guestBookMessages = [];
+      for (final document in snapshot.docs) {
+        _guestBookMessages.add(
+          GuestBookMessage(
+            name: document.data()['name'] as String,
+            message: document.data()['text'] as String,
+          ),
+        );
+      }
+      notifyListeners();
+    });
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
-        _loginState = ApplicationLoginState.loggedIn;
-        _guestBookSubscription =
-            FirebaseFirestore.instance.collection('guestbook').orderBy('timestamp', descending: true).limit(3).snapshots().listen((snapshot) {
-          _guestBookMessages = [];
-          for (final document in snapshot.docs) {
-            _guestBookMessages.add(
-              GuestBookMessage(
-                name: document.data()['name'] as String,
-                message: document.data()['text'] as String,
-              ),
-            );
-          }
-          notifyListeners();
-        });
-        _attendingSubscription = FirebaseFirestore.instance.collection('attendees').doc(user.uid).snapshots().listen((snapshot) {
-          if (snapshot.data() != null) {
-            if (snapshot.data()!['attending'] as bool) {
-              _attending = Attending.yes;
-            } else {
-              _attending = Attending.no;
-            }
-          } else {
-            _attending = Attending.unknown;
-          }
-          notifyListeners();
-        });
       } else {
         _loginState = ApplicationLoginState.loggedOut;
         _guestBookMessages = [];
@@ -141,6 +139,20 @@ class ApplicationState extends ChangeNotifier {
         email: email,
         password: password,
       );
+      _loginState = ApplicationLoginState.loggedIn;
+      user = FirebaseAuth.instance.currentUser;
+      _attendingSubscription = FirebaseFirestore.instance.collection('attendees').doc(user?.uid).snapshots().listen((snapshot) {
+        if (snapshot.data() != null) {
+          if (snapshot.data()!['attending'] as bool) {
+            _attending = Attending.yes;
+          } else {
+            _attending = Attending.no;
+          }
+        } else {
+          _attending = Attending.unknown;
+        }
+        notifyListeners();
+      });
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
