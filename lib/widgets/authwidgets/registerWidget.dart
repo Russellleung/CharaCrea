@@ -1,3 +1,4 @@
+import 'package:characrea/pages/rootPage.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
@@ -8,10 +9,11 @@ class RegisterForm extends StatefulWidget {
     required this.cancel,
     required this.email,
   });
+
   final String email;
-  final void Function(String email, String displayName, String password)
-  registerAccount;
+  final void Function(String email, String displayName, String password) registerAccount;
   final void Function() cancel;
+
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
@@ -103,6 +105,11 @@ class _RegisterFormState extends State<RegisterForm> {
                               _emailController.text,
                               _displayNameController.text,
                               _passwordController.text,
+                            );
+                            Navigator.of(context, rootNavigator: false).push(
+                              MaterialPageRoute(builder: (context) {
+                                return RootPage();
+                              }),
                             );
                           }
                         },

@@ -1,5 +1,7 @@
 import 'package:characrea/provider/AttendProvider.dart';
+import 'package:characrea/provider/counter_provider.dart';
 import 'package:characrea/provider/messageProvider.dart';
+import 'package:characrea/provider/shopping_cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +16,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => ApplicationState()),
         ChangeNotifierProvider(create: (_) => AttendProvider()),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
+        ChangeNotifierProvider(create: (_) => Counter()),
+        ChangeNotifierProvider(create: (_) => ShoppingCart()),
       ],
       child: App(),
     ),

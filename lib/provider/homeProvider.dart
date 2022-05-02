@@ -26,7 +26,9 @@ class ApplicationState extends ChangeNotifier {
     );
 
     FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {} else {
+      if (user != null) {
+        _loginState = ApplicationLoginState.loggedIn;
+      } else {
         _loginState = ApplicationLoginState.loggedOut;
         // _guestBookMessages = [];
         // _guestBookSubscription?.cancel();
@@ -42,8 +44,10 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> verifyEmail(String email,
-      void Function(FirebaseAuthException e) errorCallback,) async {
+  Future<void> verifyEmail(
+    String email,
+    void Function(FirebaseAuthException e) errorCallback,
+  ) async {
     try {
       var methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
       if (methods.contains('password')) {
@@ -58,15 +62,16 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email,
-      String password,
-      void Function(FirebaseAuthException e) errorCallback,) async {
+  Future<void> signInWithEmailAndPassword(
+    String email,
+    String password,
+    void Function(FirebaseAuthException e) errorCallback,
+  ) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      _loginState = ApplicationLoginState.loggedIn;
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }

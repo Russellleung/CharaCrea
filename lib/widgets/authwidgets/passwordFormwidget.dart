@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../pages/rootPage.dart';
 import '../widgets.dart';
 
 class PasswordForm extends StatefulWidget {
@@ -7,8 +8,10 @@ class PasswordForm extends StatefulWidget {
     required this.login,
     required this.email,
   });
+
   final String email;
   final void Function(String email, String password) login;
+
   @override
   _PasswordFormState createState() => _PasswordFormState();
 }
@@ -79,6 +82,11 @@ class _PasswordFormState extends State<PasswordForm> {
                             widget.login(
                               _emailController.text,
                               _passwordController.text,
+                            );
+                            Navigator.of(context, rootNavigator: false).push(
+                              MaterialPageRoute(builder: (context) {
+                                return RootPage();
+                              }),
                             );
                           }
                         },
