@@ -1,11 +1,14 @@
-import 'dart:async';
-
 import 'package:characrea/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/messageProvider.dart';
+
 class GuestBook extends StatefulWidget {
-  const GuestBook({required this.addMessage, required this.messages});
-  final FutureOr<void> Function(String message) addMessage;
-  final List<GuestBookMessage> messages; // new
+  // const GuestBook({required this.addMessage, required this.messages});
+  //
+  // final FutureOr<void> Function(String message) addMessage;
+  // final List<GuestBookMessage> messages; // new
 
   @override
   _GuestBookState createState() => _GuestBookState();
@@ -18,6 +21,7 @@ class _GuestBookState extends State<GuestBook> {
   @override
   // Modify from here
   Widget build(BuildContext context) {
+    context.read<MessageProvider>().setMessageProvider();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,7 +49,7 @@ class _GuestBookState extends State<GuestBook> {
                 StyledButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await widget.addMessage(_controller.text);
+                      await context.read<MessageProvider>().addMessageToGuestBook(_controller.text);
                       _controller.clear();
                     }
                   },
@@ -63,8 +67,7 @@ class _GuestBookState extends State<GuestBook> {
         ),
         // Modify from here
         const SizedBox(height: 8),
-        for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}'),
+        for (var message in context.read<MessageProvider>().guestBookMessages) Paragraph('${message.name}: ${message.message}'),
         const SizedBox(height: 8),
       ],
       // to here.
@@ -74,6 +77,7 @@ class _GuestBookState extends State<GuestBook> {
 
 class GuestBookMessage {
   GuestBookMessage({required this.name, required this.message});
+
   final String name;
   final String message;
 }

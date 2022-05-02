@@ -1,7 +1,9 @@
+import 'package:characrea/provider/AttendProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/homeProvider.dart';
+import '../provider/messageProvider.dart';
 import '../src/authentication.dart';
 import '../widgets/guestbookwidget.dart';
 import '../widgets/widgets.dart';
@@ -13,9 +15,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApplicationState applicationVariableState = context.watch<ApplicationState>();
-    int attendees = applicationVariableState.attendees;
+    AttendProvider attendProvider = context.watch<AttendProvider>();
 
-    List<GuestBookMessage> guestBookMessages = applicationVariableState.guestBookMessages;
+    int attendees = attendProvider.attendees;
+
+    List<GuestBookMessage> guestBookMessages = context.watch<MessageProvider>().guestBookMessages;
 
     ApplicationLoginState loginState = applicationVariableState.loginState;
 
@@ -50,10 +54,7 @@ class HomePage extends StatelessWidget {
           if (loginState == ApplicationLoginState.loggedIn) ...[
             const YesNoSelection(),
             const Header('Discussion'),
-            GuestBook(
-              addMessage: (message) => applicationFunctionState.addMessageToGuestBook(message),
-              messages: guestBookMessages,
-            ),
+            GuestBook(),
           ]
         ]));
   }

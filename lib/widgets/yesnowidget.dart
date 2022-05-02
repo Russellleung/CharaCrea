@@ -2,7 +2,7 @@ import 'package:characrea/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/homeProvider.dart';
+import '../provider/AttendProvider.dart';
 
 enum Attending { yes, no, unknown }
 
@@ -16,10 +16,11 @@ class YesNoSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationState applicationVariableState = context.watch<ApplicationState>();
+    context.read<AttendProvider>().setAttendProvider();
+    AttendProvider applicationFunctionState = context.read<AttendProvider>();
+    AttendProvider applicationVariableState = context.watch<AttendProvider>();
     Attending attending = applicationVariableState.attending;
-    ApplicationState applicationFunctionState = context.read<ApplicationState>();
-
+    
     switch (attending) {
       case Attending.yes:
         return Padding(
