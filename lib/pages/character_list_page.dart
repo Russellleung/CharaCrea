@@ -4,6 +4,17 @@ import 'package:provider/provider.dart';
 
 import '../provider/CharacterListProvider.dart';
 
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CharacterListPage(),
+    );
+  }
+}
+
 class CharacterListPage extends StatefulWidget {
   const CharacterListPage({Key? key}) : super(key: key);
 
@@ -11,8 +22,9 @@ class CharacterListPage extends StatefulWidget {
   _CharacterListPage createState() => _CharacterListPage();
 }
 
-class _CharacterListPage extends State<CharacterListPage> {
+class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliveClientMixin<CharacterListPage> {
   TextEditingController _searchController = TextEditingController();
+  bool keepAlive = true;
 
   @override
   void initState() {
@@ -47,7 +59,9 @@ class _CharacterListPage extends State<CharacterListPage> {
   }
 
   Widget build(BuildContext context) {
+    super.build(context);
     // context.watch<CharacterListProvider>().setCharacterProvider();
+    _onSearchChanged();
     return Container(
       child: Column(
         children: <Widget>[
@@ -68,4 +82,7 @@ class _CharacterListPage extends State<CharacterListPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => keepAlive;
 }

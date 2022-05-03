@@ -48,7 +48,7 @@ Widget CharacterCard(BuildContext context, Character character) {
             ),
           ),
           onTap: () {
-            Navigator.of(context, rootNavigator: true).push(
+            Navigator.of(context, rootNavigator: false).push(
               MaterialPageRoute(builder: (context) {
                 return CharacterDetailedPage(character: character);
               }),

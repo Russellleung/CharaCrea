@@ -17,7 +17,7 @@ class _RootPage extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      CharacterListPage(),
+      MyHomePage(),
       SecondScreen(
         message: '',
         title: '',
