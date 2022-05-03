@@ -1,4 +1,5 @@
 import 'package:characrea/provider/AttendProvider.dart';
+import 'package:characrea/provider/CharacterListProvider.dart';
 import 'package:characrea/provider/counter_provider.dart';
 import 'package:characrea/provider/messageProvider.dart';
 import 'package:characrea/provider/shopping_cart_provider.dart';
@@ -18,6 +19,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => MessageProvider()),
         ChangeNotifierProvider(create: (_) => Counter()),
         ChangeNotifierProvider(create: (_) => ShoppingCart()),
+        ChangeNotifierProvider(create: (_) => CharacterListProvider()),
       ],
       child: App(),
     ),

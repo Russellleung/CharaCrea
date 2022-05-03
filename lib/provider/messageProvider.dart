@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/guestbookwidget.dart';
-
 class MessageProvider with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
   List<GuestBookMessage> _guestBookMessages = [];
@@ -41,4 +39,11 @@ class MessageProvider with ChangeNotifier {
       'userId': FirebaseAuth.instance.currentUser!.uid,
     });
   }
+}
+
+class GuestBookMessage {
+  GuestBookMessage({required this.name, required this.message});
+
+  final String name;
+  final String message;
 }

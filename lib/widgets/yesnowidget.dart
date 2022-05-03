@@ -4,15 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../provider/AttendProvider.dart';
 
-enum Attending { yes, no, unknown }
-
 class YesNoSelection extends StatelessWidget {
   const YesNoSelection({Key? key}) : super(key: key);
-
-  // const YesNoSelection({required this.state, required this.onSelection});
-  //
-  // final Attending state;
-  // final void Function(Attending selection) onSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +13,7 @@ class YesNoSelection extends StatelessWidget {
     AttendProvider applicationFunctionState = context.read<AttendProvider>();
     AttendProvider applicationVariableState = context.watch<AttendProvider>();
     Attending attending = applicationVariableState.attending;
-    
+
     switch (attending) {
       case Attending.yes:
         return Padding(

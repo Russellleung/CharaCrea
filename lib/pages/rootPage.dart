@@ -1,7 +1,7 @@
 import 'package:characrea/pages/second_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'home_screen.dart';
+import 'character_list_page.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _RootPage extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      MyHomePage(),
+      CharacterListPage(),
       SecondScreen(
         message: '',
         title: '',

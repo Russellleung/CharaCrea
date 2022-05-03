@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/yesnowidget.dart';
+enum Attending { yes, no, unknown }
 
 class AttendProvider with ChangeNotifier {
   int _attendees = 0;
@@ -23,21 +23,20 @@ class AttendProvider with ChangeNotifier {
       _attendeesSubscription?.cancel();
     });
 
-
     _attendingSubscription =
         FirebaseFirestore.instance.collection('attendees').doc(FirebaseAuth.instance.currentUser?.uid).snapshots().listen((snapshot) {
-          if (snapshot.data() != null) {
-            if (snapshot.data()!['attending'] as bool) {
-              _attending = Attending.yes;
-            } else {
-              _attending = Attending.no;
-            }
-          } else {
-            _attending = Attending.unknown;
-          }
-          notifyListeners();
-          _attendingSubscription?.cancel();
-        });
+      if (snapshot.data() != null) {
+        if (snapshot.data()!['attending'] as bool) {
+          _attending = Attending.yes;
+        } else {
+          _attending = Attending.no;
+        }
+      } else {
+        _attending = Attending.unknown;
+      }
+      notifyListeners();
+      _attendingSubscription?.cancel();
+    });
   }
 
   set attending(Attending attending) {
