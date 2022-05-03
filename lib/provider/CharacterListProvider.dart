@@ -27,24 +27,7 @@ class CharacterListProvider with ChangeNotifier {
 
   List<Character> get allCharacters => _allCharacters;
 
-  List<Character> _filteredCharacters = [
-    new Character(
-        name: "name",
-        group: "group",
-        type: 'type',
-        power: 'power',
-        powerDescription: 'powerDescription',
-        race: 'race',
-        photo: 'photo',
-        croppedPhoto: 'croppedPhoto',
-        catchphrase: 'catchphrase',
-        description: 'description',
-        hair: 'hair',
-        appearance: 'appearance',
-        frame: 'frame',
-        outfit: 'outfit',
-        documentId: 'documentId')
-  ];
+  List<Character> _filteredCharacters = [];
 
   List<Character> get filteredCharacters => _filteredCharacters;
 

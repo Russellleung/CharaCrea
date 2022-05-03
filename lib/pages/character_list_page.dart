@@ -33,20 +33,21 @@ class _CharacterListPage extends State<CharacterListPage> {
 
   searchResultsList() {
     if (_searchController.text != "") {
-      for (var character in context.watch<CharacterListProvider>().allCharacters) {
+      context.read<CharacterListProvider>().filteredCharacters = [];
+      for (var character in context.read<CharacterListProvider>().allCharacters) {
         var title = character.name.toLowerCase();
 
         if (title.contains(_searchController.text.toLowerCase())) {
-          context.watch<CharacterListProvider>().addFilteredCharacter(character);
+          context.read<CharacterListProvider>().addFilteredCharacter(character);
         }
       }
     } else {
-      context.watch<CharacterListProvider>().filteredCharacters = context.watch<CharacterListProvider>().allCharacters;
+      context.read<CharacterListProvider>().filteredCharacters = context.read<CharacterListProvider>().allCharacters;
     }
   }
 
   Widget build(BuildContext context) {
-    //context.watch<CharacterListProvider>().setCharacterProvider();
+    // context.watch<CharacterListProvider>().setCharacterProvider();
     return Container(
       child: Column(
         children: <Widget>[
@@ -61,8 +62,7 @@ class _CharacterListPage extends State<CharacterListPage> {
           Expanded(
               child: ListView.builder(
             itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
-            itemBuilder: (BuildContext context, int index) =>
-                CharacterCard(context, context.watch<CharacterListProvider>().filteredCharacters[index]),
+            itemBuilder: (BuildContext context, int index) => CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
           )),
         ],
       ),
