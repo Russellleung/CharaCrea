@@ -36,7 +36,7 @@ class CharacterEditPage extends StatelessWidget {
         key: Key('addItem_floatingActionButton'),
         onPressed: () {
           context.read<ShoppingCart>().addItem('Bread');
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         tooltip: 'Add Item',
         child: Icon(Icons.add),

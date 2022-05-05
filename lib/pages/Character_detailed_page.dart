@@ -1,5 +1,4 @@
 import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:characrea/pages/third_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -44,30 +43,30 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
           ),
           borderRadius: radius,
           body: GestureDetector(
-              onHorizontalDragEnd: (DragEndDetails details) {
-                int sensitivity = 8;
-                if (details.primaryVelocity! > sensitivity) {
-                  // full screen
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(builder: (context) {
-                      return ThirdScreen(
-                        message: '',
-                        title: '',
-                      );
-                    }),
-                  );
-                } else if (details.primaryVelocity! < -sensitivity) {
-                  // edit screen
-                  Navigator.of(context, rootNavigator: false).push(
-                    MaterialPageRoute(builder: (context) {
-                      return ThirdScreen(
-                        message: '',
-                        title: '',
-                      );
-                    }),
-                  );
-                }
-              },
+            // onHorizontalDragEnd: (DragEndDetails details) {
+            //   int sensitivity = 8;
+            //   if (details.primaryVelocity! > sensitivity) {
+            //     // full screen
+            //     Navigator.of(context, rootNavigator: true).push(
+            //       MaterialPageRoute(builder: (context) {
+            //         return ThirdScreen(
+            //           message: '',
+            //           title: '',
+            //         );
+            //       }),
+            //     );
+            //   } else if (details.primaryVelocity! < -sensitivity) {
+            //     // edit screen
+            //     Navigator.of(context, rootNavigator: false).push(
+            //       MaterialPageRoute(builder: (context) {
+            //         return ThirdScreen(
+            //           message: '',
+            //           title: '',
+            //         );
+            //       }),
+            //     );
+            //   }
+            // },
               child: ListView(children: <Widget>[
                 Image.asset('assets/codelab.png'),
                 const SizedBox(height: 8),

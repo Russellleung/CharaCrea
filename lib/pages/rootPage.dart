@@ -1,6 +1,8 @@
 import 'package:characrea/pages/second_screen.dart';
+import 'package:characrea/pages/test_tab_transition.dart';
 import 'package:flutter/material.dart';
 
+import 'character_carousell.dart';
 import 'character_list_page.dart';
 
 class RootPage extends StatefulWidget {
@@ -22,6 +24,8 @@ class _RootPage extends State<RootPage> {
         message: '',
         title: '',
       ),
+      CharacterCarousel(),
+      TabTransition(),
     ];
 
     return MaterialApp(
