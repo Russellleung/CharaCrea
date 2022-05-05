@@ -10,6 +10,9 @@ class CharacterEditPage extends StatelessWidget {
   final String title;
   final String message;
 
+  // will have to be stateful. save character locally so other places can't change
+  // should have 2 character states. 1 original and another will be changed so can go back
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,8 +1,8 @@
+import 'package:characrea/pages/test_tab_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../provider/CharacterListProvider.dart';
-import 'Character_detailed_page.dart';
 
 Widget CharacterCard(BuildContext context, Character character) {
   final groupType = character.groupType();
@@ -50,7 +50,7 @@ Widget CharacterCard(BuildContext context, Character character) {
           onTap: () {
             Navigator.of(context, rootNavigator: false).push(
               MaterialPageRoute(builder: (context) {
-                return CharacterDetailedPage(character: character);
+                return TabTransition();
               }),
             );
           }),
