@@ -1,12 +1,13 @@
 import 'package:characrea/pages/Character_detailed_page.dart';
 import 'package:characrea/pages/Character_full_screen_page.dart';
-import 'package:characrea/pages/character_edit_or_add_page.dart';
+import 'package:characrea/pages/character_edit_page.dart';
 import 'package:flutter/material.dart';
 
 import '../provider/CharacterListProvider.dart';
 
 class TabTransition extends StatefulWidget {
-  const TabTransition({Key? key}) : super(key: key);
+  TabTransition({Key? key, required this.character}) : super(key: key);
+  Character character;
 
   @override
   State<TabTransition> createState() => _TabTransitionState();
@@ -15,36 +16,6 @@ class TabTransition extends StatefulWidget {
 class _TabTransitionState extends State<TabTransition> with TickerProviderStateMixin {
   int _selectedIndex = 1;
   late TabController _tabController;
-  List<Widget> containers = [
-// Container(
-//   color: Colors.pink,
-// ),
-// Container(
-//   color: Colors.blue,
-// ),
-// Container(
-//   color: Colors.deepPurple,
-// )
-    CharacterDetailedPage(
-        character: Character(
-            name: "name",
-            group: "group",
-            type: 'type',
-            power: 'power',
-            powerDescription: 'powerDescription',
-            race: 'race',
-            photo: 'photo',
-            croppedPhoto: 'croppedPhoto',
-            catchphrase: 'catchphrase',
-            description: 'description',
-            hair: 'hair',
-            appearance: 'appearance',
-            frame: 'frame',
-            outfit: 'outfit',
-            documentId: 'documentId')),
-    CharacterEditPage(title: "", message: ""),
-    CharacterFullScreenPage(title: "title", message: "message"),
-  ];
 
   @override
   void initState() {
@@ -87,7 +58,26 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
         ),
         body: TabBarView(
           controller: _tabController,
-          children: containers,
+          children: [
+            // Container(
+            //   color: Colors.pink,
+            // ),
+            // Container(
+            //   color: Colors.blue,
+            // ),
+            // Container(
+            //   color: Colors.deepPurple,
+            // )
+            CharacterDetailedPage(character: widget.character),
+            CharacterEditPage(
+                originalCharacter: widget.character,
+                callback: (character) {
+                  setState(() {
+                    widget.character = character;
+                  });
+                }),
+            CharacterFullScreenPage(title: "title", message: "message"),
+          ],
         ),
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:characrea/pages/second_screen.dart';
-import 'package:characrea/pages/test_tab_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 
+import '../provider/CharacterListProvider.dart';
+import '../widgets/Formbuilder.dart';
 import 'character_carousell.dart';
 import 'character_list_page.dart';
 
@@ -25,10 +27,13 @@ class _RootPage extends State<RootPage> {
         title: '',
       ),
       CharacterCarousel(),
-      TabTransition(),
+      Formbuilder(originalCharacter: Character()),
     ];
 
     return MaterialApp(
+      localizationsDelegates: const [
+        FormBuilderLocalizations.delegate,
+      ],
       home: Scaffold(
           body: PageView(
             controller: _pageController,

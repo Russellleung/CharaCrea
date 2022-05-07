@@ -50,7 +50,7 @@ Widget CharacterCard(BuildContext context, Character character) {
           onTap: () {
             Navigator.of(context, rootNavigator: false).push(
               MaterialPageRoute(builder: (context) {
-                return TabTransition();
+                return TabTransition(character: character);
               }),
             );
           }),

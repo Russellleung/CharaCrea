@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class CharacterListProvider with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _characterListSubscription;
   List<Character> _allCharacters = [
-    new Character(
+    Character(
         name: "name",
         group: "group",
         type: 'type',
@@ -16,6 +16,7 @@ class CharacterListProvider with ChangeNotifier {
         race: 'race',
         photo: 'photo',
         croppedPhoto: 'croppedPhoto',
+        motto: 'motto',
         catchphrase: 'catchphrase',
         description: 'description',
         hair: 'hair',
@@ -59,6 +60,7 @@ class CharacterListProvider with ChangeNotifier {
           race: document.data()["race"],
           photo: document.data()["photo"],
           croppedPhoto: document.data()["croppedPhoto"],
+          motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
           description: document.data()["description"],
           documentId: document.data()["documentId"],
@@ -102,21 +104,22 @@ class CharacterListProvider with ChangeNotifier {
 
 class Character {
   Character({
-    required this.name,
-    required this.group,
-    required this.type,
-    required this.power,
-    required this.powerDescription,
-    required this.race,
-    required this.photo,
-    required this.croppedPhoto,
-    required this.catchphrase,
-    required this.description,
-    required this.hair,
-    required this.appearance,
-    required this.frame,
-    required this.outfit,
-    required this.documentId,
+    this.name = '',
+    this.group = '',
+    this.type = '',
+    this.power = '',
+    this.powerDescription = '',
+    this.race = '',
+    this.photo = '',
+    this.croppedPhoto = '',
+    this.motto = '',
+    this.catchphrase = '',
+    this.description = '',
+    this.hair = '',
+    this.appearance = '',
+    this.frame = '',
+    this.outfit = '',
+    this.documentId = '',
   });
 
   final String name;
@@ -127,6 +130,7 @@ class Character {
   final String race;
   final String photo;
   final String croppedPhoto;
+  final String motto;
   final String catchphrase;
   final String description;
   final String hair;
@@ -144,6 +148,7 @@ class Character {
         'race': race,
         'photo': photo,
         'croppedPhoto': croppedPhoto,
+        'motto': motto,
         'catchphrase': catchphrase,
         'description': description,
         'hair': hair,
@@ -151,6 +156,26 @@ class Character {
         'frame': frame,
         'outfit': outfit,
       };
+
+  Character copy() {
+    return Character(
+        name: name,
+        group: group,
+        type: type,
+        power: power,
+        powerDescription: powerDescription,
+        race: race,
+        photo: photo,
+        croppedPhoto: croppedPhoto,
+        motto: motto,
+        catchphrase: catchphrase,
+        description: description,
+        hair: hair,
+        appearance: appearance,
+        frame: frame,
+        outfit: outfit,
+        documentId: documentId);
+  }
 
 // Character.fromSnapshot(DocumentSnapshot snapshot)
 //     :
