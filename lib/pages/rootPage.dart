@@ -6,6 +6,7 @@ import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
 import 'character_carousell.dart';
 import 'character_list_page.dart';
+import 'imageCropper.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class _RootPage extends State<RootPage> {
       ),
       CharacterCarousel(),
       Formbuilder(originalCharacter: Character()),
+      ImageCropperPage(),
     ];
 
     return MaterialApp(
