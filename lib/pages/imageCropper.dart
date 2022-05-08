@@ -64,6 +64,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   XFile? _pickedFile;
   CroppedFile? _croppedFile;
+  CroppedFile? _smallerCroppedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -85,14 +86,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               Expanded(child: _body()),
-              Expanded(child: _body()),
             ],
           ),
         ));
   }
 
   Widget _body() {
-    if (_croppedFile != null || _pickedFile != null) {
+    if (_smallerCroppedFile != null || _croppedFile != null || _pickedFile != null) {
       return _imageCard();
     } else {
       return _uploaderCard();
@@ -117,6 +117,21 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 24.0),
           _menu(),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 20.0),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+            child: Card(
+              elevation: 4.0,
+              child: Padding(
+                padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+                child: _image2(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24.0),
+          _menu2(),
         ],
       ),
     );
@@ -148,7 +163,68 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget _image2() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    if (_smallerCroppedFile != null) {
+      final path = _smallerCroppedFile!.path;
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 0.8 * screenWidth,
+          maxHeight: 0.7 * screenHeight,
+        ),
+        child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+      );
+    } else if (_pickedFile != null) {
+      final path = _pickedFile!.path;
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 0.8 * screenWidth,
+          maxHeight: 0.7 * screenHeight,
+        ),
+        child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
   Widget _menu() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (_croppedFile == null)
+          FloatingActionButton(
+            onPressed: () {
+              _cropImage(
+                  ratioY: 3,
+                  ratioX: 2,
+                  setCropped: (CroppedFile croppedFile) {
+                    setState(() {
+                      _croppedFile = croppedFile;
+                    });
+                  });
+            },
+            backgroundColor: const Color(0xFFBC764A),
+            tooltip: 'Crop',
+            child: const Icon(Icons.crop),
+          )
+        else
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                _croppedFile = null;
+              });
+            },
+            backgroundColor: const Color(0xFFBC764A),
+            tooltip: 'Revert',
+            child: const Icon(Icons.undo),
+          ),
+      ],
+    );
+  }
+
+  Widget _menu2() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -160,16 +236,37 @@ class _HomePageState extends State<HomePage> {
           tooltip: 'Delete',
           child: const Icon(Icons.delete),
         ),
-        if (_croppedFile == null)
+        if (_smallerCroppedFile == null)
           Padding(
             padding: const EdgeInsets.only(left: 32.0),
             child: FloatingActionButton(
               onPressed: () {
-                _cropImage();
+                _cropImage(
+                    ratioY: 1,
+                    ratioX: 1,
+                    setCropped: (CroppedFile croppedFile) {
+                      setState(() {
+                        _smallerCroppedFile = croppedFile;
+                      });
+                    });
               },
               backgroundColor: const Color(0xFFBC764A),
               tooltip: 'Crop',
               child: const Icon(Icons.crop),
+            ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.only(left: 32.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _smallerCroppedFile = null;
+                });
+              },
+              backgroundColor: const Color(0xFFBC764A),
+              tooltip: 'Revert',
+              child: const Icon(Icons.undo),
             ),
           )
       ],
@@ -238,29 +335,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _cropImage() async {
+  Future<void> _cropImage({double ratioX = 1, double ratioY = 1, required void Function(CroppedFile croppedFile) setCropped}) async {
     if (_pickedFile != null) {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: _pickedFile!.path,
         compressFormat: ImageCompressFormat.jpg,
         compressQuality: 100,
-        aspectRatio: const CropAspectRatio(ratioX: 2, ratioY: 3),
+        aspectRatio: CropAspectRatio(ratioX: ratioX, ratioY: ratioY),
         uiSettings: [
-          AndroidUiSettings(
-              toolbarTitle: 'Cropper',
-              toolbarColor: Colors.deepOrange,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.ratio3x2,
-              lockAspectRatio: true),
+          AndroidUiSettings(toolbarTitle: 'Cropper', toolbarColor: Colors.deepOrange, toolbarWidgetColor: Colors.white, lockAspectRatio: true),
           IOSUiSettings(
             title: 'Cropper',
           ),
         ],
       );
       if (croppedFile != null) {
-        setState(() {
-          _croppedFile = croppedFile;
-        });
+        setCropped(croppedFile);
       }
     }
   }
@@ -278,6 +368,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _pickedFile = null;
       _croppedFile = null;
+      _smallerCroppedFile = null;
     });
   }
 }
