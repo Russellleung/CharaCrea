@@ -1,4 +1,5 @@
 import 'package:characrea/pages/second_screen.dart';
+import 'package:characrea/pages/test_upload_image.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 
@@ -29,7 +30,8 @@ class _RootPage extends State<RootPage> {
       ),
       CharacterCarousel(),
       Formbuilder(originalCharacter: Character()),
-      ImageCropperPage(),
+      CropperImage(title: "title"),
+      uploadImage(),
     ];
 
     return MaterialApp(
@@ -55,10 +57,11 @@ class _RootPage extends State<RootPage> {
             child: BottomNavigationBar(
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "home"),
-                BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "home"),
-                BottomNavigationBarItem(icon: Icon(Icons.message), label: "home"),
-                BottomNavigationBarItem(icon: Icon(Icons.table_chart), label: "home"),
-                BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "home"),
+                BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "calendar_today"),
+                BottomNavigationBarItem(icon: Icon(Icons.message), label: "message"),
+                BottomNavigationBarItem(icon: Icon(Icons.table_chart), label: "table_chart"),
+                BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "account_circle"),
+                BottomNavigationBarItem(icon: Icon(Icons.access_time), label: "access_time"),
               ],
               currentIndex: _selectedIndex,
               selectedItemColor: Color(0xFF334192),

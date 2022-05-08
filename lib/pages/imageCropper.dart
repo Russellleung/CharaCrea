@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -44,15 +47,15 @@ class ImageCropperPage extends StatelessWidget {
               side: MaterialStateBorderSide.resolveWith((states) => const BorderSide(color: Color(0xFFBC764A))),
             ),
           )),
-      home: const HomePage(title: 'Image Cropper Demo'),
+      home: const CropperImage(title: 'Image Cropper Demo'),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class CropperImage extends StatefulWidget {
   final String title;
 
-  const HomePage({
+  const CropperImage({
     Key? key,
     required this.title,
   }) : super(key: key);
@@ -61,10 +64,46 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<CropperImage> {
+  // Create a storage reference from our app
+
   XFile? _pickedFile;
   CroppedFile? _croppedFile;
   CroppedFile? _smallerCroppedFile;
+  String? temp;
+  final storageRef = FirebaseStorage.instance.ref();
+
+  Future<void> _uploadToDatabase(File file, String path) async {
+    final ImageRef = storageRef.child(path);
+    try {
+      await ImageRef.putFile(
+          file,
+          SettableMetadata(
+            contentType: "name/jpeg",
+          ));
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _readFromDatabase(String path) async {
+    final ImageUrl = await storageRef.child(path).getDownloadURL();
+    setState(() {
+      temp = ImageUrl;
+    });
+  }
+
+  Future<void> _deleteFromDatabase(String path) async {
+    await storageRef.child(path).delete();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _readFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-08 23:28:55.710012Image Cropper DemoSmall.jpg");
+    // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.589960titleSmall.jpg");
+    // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.597231title.jpg");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +124,8 @@ class _HomePageState extends State<HomePage> {
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).highlightColor),
                   ),
                 ),
-              Expanded(child: _body()),
+              _body(),
+              Image.network(temp!),
             ],
           ),
         ));
@@ -235,6 +275,28 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.redAccent,
           tooltip: 'Delete',
           child: const Icon(Icons.delete),
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            if (_smallerCroppedFile != null && _croppedFile != null) {
+              final pathSmall = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}${widget.title}Small.jpg";
+              _uploadToDatabase(File(_smallerCroppedFile!.path), pathSmall);
+              final path = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}${widget.title}.jpg";
+              _uploadToDatabase(File(_croppedFile!.path), path);
+            } else {
+              Fluttertoast.showToast(
+                  msg: "One or more have not been cropped",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            }
+          },
+          backgroundColor: Colors.greenAccent,
+          tooltip: '',
+          child: const Icon(Icons.add),
         ),
         if (_smallerCroppedFile == null)
           Padding(
