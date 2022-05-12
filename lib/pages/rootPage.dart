@@ -8,7 +8,7 @@ import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
 import 'character_carousell.dart';
 import 'character_list_page.dart';
-import 'imageCropper.dart';
+import '../widgets/imageCropper.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key}) : super(key: key);

@@ -71,9 +71,9 @@ class _HomePageState extends State<CropperImage> {
   CroppedFile? _croppedFile;
   CroppedFile? _smallerCroppedFile;
   String? temp;
-  final storageRef = FirebaseStorage.instance.ref();
 
   Future<void> _uploadToDatabase(File file, String path) async {
+    final storageRef = FirebaseStorage.instance.ref();
     final ImageRef = storageRef.child(path);
     try {
       await ImageRef.putFile(
@@ -87,48 +87,53 @@ class _HomePageState extends State<CropperImage> {
   }
 
   Future<void> _readFromDatabase(String path) async {
+    final storageRef = FirebaseStorage.instance.ref();
     final ImageUrl = await storageRef.child(path).getDownloadURL();
+    // final documentDirectory = await getApplicationDocumentsDirectory();
+    //
+    // final file = File(join(documentDirectory.path, 'imagetest.png'));
+    //
+    // file.writeAsBytesSync(response.bodyBytes);
     setState(() {
       temp = ImageUrl;
     });
   }
 
   Future<void> _deleteFromDatabase(String path) async {
+    final storageRef = FirebaseStorage.instance.ref();
     await storageRef.child(path).delete();
   }
 
   @override
   void initState() {
     super.initState();
-    _readFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-08 23:28:55.710012Image Cropper DemoSmall.jpg");
+    //_readFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-08 23:28:55.710012Image Cropper DemoSmall.jpg");
     // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.589960titleSmall.jpg");
     // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.597231title.jpg");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: !kIsWeb ? AppBar(title: Text(widget.title)) : null,
-        body: Center(
-          child: ListView(
-            // mainAxisSize: MainAxisSize.max,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(20.0),
-            children: [
-              if (kIsWeb)
-                Padding(
-                  padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
-                  child: Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).highlightColor),
-                  ),
-                ),
-              _body(),
-              Image.network(temp!),
-            ],
-          ),
-        ));
+    return _body();
+
+    //   ListView(
+    //   // mainAxisSize: MainAxisSize.max,
+    //   // crossAxisAlignment: CrossAxisAlignment.start,
+    //   shrinkWrap: true,
+    //   padding: const EdgeInsets.all(20.0),
+    //   children: [
+    //     if (kIsWeb)
+    //       Padding(
+    //         padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+    //         child: Text(
+    //           widget.title,
+    //           style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).highlightColor),
+    //         ),
+    //       ),
+    //
+    //     //Image.network(temp!),
+    //   ],
+    // );
   }
 
   Widget _body() {

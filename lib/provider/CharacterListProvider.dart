@@ -1,7 +1,18 @@
 import 'dart:async';
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class CharacterListProvider with ChangeNotifier {
@@ -58,8 +69,9 @@ class CharacterListProvider with ChangeNotifier {
           power: document.data()["power"],
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
-          photo: document.data()["photo"],
-          croppedPhoto: document.data()["croppedPhoto"],
+          displayPhoto: document.data()["displayPhoto"],
+          wholePhoto: document.data()["wholePhoto"],
+          facePhoto: document.data()['facePhoto'],
           motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
           description: document.data()["description"],
@@ -88,8 +100,9 @@ class CharacterListProvider with ChangeNotifier {
           power: document.data()["power"],
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
-          photo: document.data()["photo"],
-          croppedPhoto: document.data()["croppedPhoto"],
+          displayPhoto: document.data()["displayPhoto"],
+          wholePhoto: document.data()["wholePhoto"],
+          facePhoto: document.data()['facePhoto'],
           motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
           description: document.data()["description"],
@@ -111,14 +124,15 @@ class CharacterListProvider with ChangeNotifier {
 class Character {
   Character({
     this.name = '',
-    this.group = 1,
-    this.type = 1,
-    this.gender = 1,
+    this.group = 0,
+    this.type = 0,
+    this.gender = 0,
     this.power = '',
     this.powerDescription = '',
     this.race = '',
-    this.photo = '',
-    this.croppedPhoto = '',
+    this.wholePhoto = '',
+    this.displayPhoto = '',
+    this.facePhoto = '',
     this.motto = '',
     this.catchphrase = '',
     this.description = '',
@@ -136,8 +150,9 @@ class Character {
   final String power;
   final String powerDescription;
   final String race;
-  final String photo;
-  final String croppedPhoto;
+  final String wholePhoto;
+  final String displayPhoto;
+  final String facePhoto;
   final String motto;
   final String catchphrase;
   final String description;
@@ -155,8 +170,9 @@ class Character {
         'power': power,
         'powerDescription': powerDescription,
         'race': race,
-        'photo': photo,
-        'croppedPhoto': croppedPhoto,
+        'wholePhoto': wholePhoto,
+        'displayPhoto': displayPhoto,
+        'facePhoto': facePhoto,
         'motto': motto,
         'catchphrase': catchphrase,
         'description': description,
@@ -175,8 +191,9 @@ class Character {
         power: power,
         powerDescription: powerDescription,
         race: race,
-        photo: photo,
-        croppedPhoto: croppedPhoto,
+        wholePhoto: wholePhoto,
+        displayPhoto: displayPhoto,
+        facePhoto: facePhoto,
         motto: motto,
         catchphrase: catchphrase,
         description: description,
