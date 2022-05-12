@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../provider/CharacterListProvider.dart';
 
 Widget CharacterCard(BuildContext context, Character character) {
-  final groupType = character.groupType();
+  // final groupType = character.groupType();
 
   return Container(
     child: Card(
@@ -36,11 +36,11 @@ Widget CharacterCard(BuildContext context, Character character) {
                   child: Row(
                     children: [
                       Text(
-                        character.group,
+                        character.description,
                         style: new TextStyle(fontSize: 35.0),
                       ),
                       Spacer(),
-                      Icon(groupType[character.group]),
+                      // Icon(groupType[character.group]),
                     ],
                   ),
                 )

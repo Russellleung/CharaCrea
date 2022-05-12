@@ -2,6 +2,7 @@ import 'package:characrea/pages/second_screen.dart';
 import 'package:characrea/pages/test_upload_image.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
+import 'package:provider/provider.dart';
 
 import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
@@ -29,7 +30,12 @@ class _RootPage extends State<RootPage> {
         title: '',
       ),
       CharacterCarousel(),
-      Formbuilder(originalCharacter: Character()),
+      Formbuilder(
+        originalCharacter: Character(),
+        callback: (Character character) {
+          print("callback");
+        },
+      ),
       CropperImage(title: "title"),
       uploadImage(),
     ];

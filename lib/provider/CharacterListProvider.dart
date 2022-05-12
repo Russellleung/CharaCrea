@@ -5,26 +5,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CharacterListProvider with ChangeNotifier {
-  StreamSubscription<QuerySnapshot>? _characterListSubscription;
-  List<Character> _allCharacters = [
-    Character(
-        name: "name",
-        group: "group",
-        type: 'type',
-        power: 'power',
-        powerDescription: 'powerDescription',
-        race: 'race',
-        photo: 'photo',
-        croppedPhoto: 'croppedPhoto',
-        motto: 'motto',
-        catchphrase: 'catchphrase',
-        description: 'description',
-        hair: 'hair',
-        appearance: 'appearance',
-        frame: 'frame',
-        outfit: 'outfit',
-        documentId: 'documentId')
-  ];
+  StreamSubscription<QuerySnapshot>? characterListSubscription;
+  List<Character> _allCharacters = [];
+
+  //[
+  // Character(
+  //     name: "name",
+  //     group: 1,
+  //     type: 1,
+  //     gender: 1,
+  //     power: 'power',
+  //     powerDescription: 'powerDescription',
+  //     race: 'race',
+  //     photo: 'photo',
+  //     croppedPhoto: 'croppedPhoto',
+  //     motto: 'motto',
+  //     catchphrase: 'catchphrase',
+  //     description: 'description',
+  //     hair: 'hair',
+  //     appearance: 'appearance',
+  //     frame: 'frame',
+  //     outfit: 'outfit',
+  //     documentId: 'documentId')
+  //];
 
   List<Character> get allCharacters => _allCharacters;
 
@@ -42,71 +45,75 @@ class CharacterListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setCharacterProvider() {
-    _characterListSubscription = FirebaseFirestore.instance
-        .collection('userCharacters')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('characters')
-        .snapshots()
-        .listen((snapshot) {
+  Future<void> getCharacters() async {
+    String id = await FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').get().then((snapshot) {
       _allCharacters = [];
       for (final document in snapshot.docs) {
         _allCharacters.add(Character(
           name: document.data()["name"],
           group: document.data()["group"],
           type: document.data()["type"],
+          gender: document.data()["gender"],
           power: document.data()["power"],
-          powerDescription: document.data()["power"],
+          powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
           photo: document.data()["photo"],
           croppedPhoto: document.data()["croppedPhoto"],
           motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
           description: document.data()["description"],
-          documentId: document.data()["documentId"],
+          documentId: document.id,
           appearance: document.data()["appearance"],
           outfit: document.data()["outfit"],
           frame: document.data()["frame"],
           hair: document.data()["hair"],
         ));
       }
-      notifyListeners();
-      _characterListSubscription?.cancel();
     });
   }
 
-  Future addCharacter(Character character) async {
-    return await FirebaseFirestore.instance
-        .collection('userCharacters')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('characters')
-        .add(character.toJson());
-  }
+  Future<void> setCharacterProvider() async {
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    print("id" + id);
+    characterListSubscription =
+        FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
+      _allCharacters = [];
+      for (final document in snapshot.docs) {
+        _allCharacters.add(Character(
+          name: document.data()["name"],
+          group: document.data()["group"],
+          type: document.data()["type"],
+          gender: document.data()["gender"],
+          power: document.data()["power"],
+          powerDescription: document.data()["powerDescription"],
+          race: document.data()["race"],
+          photo: document.data()["photo"],
+          croppedPhoto: document.data()["croppedPhoto"],
+          motto: document.data()["motto"],
+          catchphrase: document.data()["catchphrase"],
+          description: document.data()["description"],
+          documentId: document.id,
+          appearance: document.data()["appearance"],
+          outfit: document.data()["outfit"],
+          frame: document.data()["frame"],
+          hair: document.data()["hair"],
+        ));
+      }
+      filteredCharacters = _allCharacters;
 
-  Future setCharacter(Character character) async {
-    return await FirebaseFirestore.instance
-        .collection('userCharacters')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('characters')
-        .doc(character.documentId)
-        .set(character.toJson());
-  }
-
-  Future deleteCharacter(Character character) async {
-    return await FirebaseFirestore.instance
-        .collection('userCharacters')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('characters')
-        .doc(character.documentId)
-        .delete();
+      notifyListeners();
+      // _characterListSubscription?.cancel();
+    });
   }
 }
 
 class Character {
   Character({
     this.name = '',
-    this.group = '',
-    this.type = '',
+    this.group = 1,
+    this.type = 1,
+    this.gender = 1,
     this.power = '',
     this.powerDescription = '',
     this.race = '',
@@ -123,8 +130,9 @@ class Character {
   });
 
   final String name;
-  final String group;
-  final String type;
+  final int group;
+  final int type;
+  final int gender;
   final String power;
   final String powerDescription;
   final String race;
@@ -143,6 +151,7 @@ class Character {
         'name': name,
         'group': group,
         'type': type,
+        'gender': gender,
         'power': power,
         'powerDescription': powerDescription,
         'race': race,
@@ -162,6 +171,7 @@ class Character {
         name: name,
         group: group,
         type: type,
+        gender: gender,
         power: power,
         powerDescription: powerDescription,
         race: race,
@@ -198,4 +208,30 @@ class Character {
         "ship": Icons.directions_boat,
         "other": Icons.directions,
       };
+}
+
+Future addCharacter(Character character) async {
+  return await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .add(character.toJson());
+}
+
+Future setCharacter(Character character) async {
+  return await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .doc(character.documentId)
+      .set(character.toJson());
+}
+
+Future deleteCharacter(Character character) async {
+  return await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .doc(character.documentId)
+      .delete();
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/CharacterListProvider.dart';
+import '../widgets/Formbuilder.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -30,12 +31,19 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    context.read<CharacterListProvider>().setCharacterProvider();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
+    context.read<CharacterListProvider>().characterListSubscription?.cancel();
     super.dispose();
   }
 
@@ -58,10 +66,8 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
     }
   }
 
+  @override
   Widget build(BuildContext context) {
-    super.build(context);
-    // context.watch<CharacterListProvider>().setCharacterProvider();
-    _onSearchChanged();
     return Container(
       child: Column(
         children: <Widget>[
@@ -78,6 +84,23 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
             itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
             itemBuilder: (BuildContext context, int index) => CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
           )),
+          Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: false).push(
+                MaterialPageRoute(builder: (context) {
+                  return Formbuilder(
+                    originalCharacter: Character(),
+                    callback: (Character character) {
+                      print("callback");
+                    },
+                  );
+                }),
+              );
+            },
+            tooltip: 'Add Item',
+            child: Icon(Icons.add),
+          )
         ],
       ),
     );

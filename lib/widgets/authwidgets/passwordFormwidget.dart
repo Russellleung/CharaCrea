@@ -83,11 +83,11 @@ class _PasswordFormState extends State<PasswordForm> {
                               _emailController.text,
                               _passwordController.text,
                             );
-                            Navigator.of(context, rootNavigator: false).push(
-                              MaterialPageRoute(builder: (context) {
-                                return RootPage();
-                              }),
-                            );
+                            // Navigator.of(context, rootNavigator: true).push(
+                            //   MaterialPageRoute(builder: (context) {
+                            //     return RootPage();
+                            //   }),
+                            // );
                           }
                         },
                         child: const Text('SIGN IN'),

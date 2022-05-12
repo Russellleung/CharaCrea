@@ -19,7 +19,7 @@ class AttendProvider with ChangeNotifier {
   void setAttendProvider() {
     _attendeesSubscription = FirebaseFirestore.instance.collection('attendees').where('attending', isEqualTo: true).snapshots().listen((snapshot) {
       _attendees = snapshot.docs.length;
-      //notifyListeners();
+      notifyListeners();
       _attendeesSubscription?.cancel();
     });
 

@@ -1,3 +1,4 @@
+import 'package:characrea/pages/rootPage.dart';
 import 'package:characrea/provider/AttendProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,13 @@ class HomePage extends StatelessWidget {
             const YesNoSelection(),
             const Header('Discussion'),
             GuestBook(),
+            FloatingActionButton(onPressed: () {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(builder: (context) {
+                  return RootPage();
+                }),
+              );
+            })
           ]
         ]));
   }
