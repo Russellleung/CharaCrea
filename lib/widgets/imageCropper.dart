@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_downloader/image_downloader.dart';
+import 'package:uri_to_file/uri_to_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ImageCropperPage extends StatelessWidget {
   const ImageCropperPage({Key? key}) : super(key: key);
@@ -72,6 +75,30 @@ class _HomePageState extends State<CropperImage> {
   CroppedFile? _smallerCroppedFile;
   String? temp;
 
+  Future<void> convertUriToFile(String uriString) async {
+    try {
+      File file = await toFile(uriString); // Converting uri to file
+    } on UnsupportedError catch (e) {
+      print(e.message); // Unsupported error for uri not supported
+    } on IOException catch (e) {
+      print(e); // IOException for system error
+    } catch (e) {
+      print(e); // General exception
+    }
+  }
+
+  //
+  // Future<Uint8List> _networkImageToByte(imageUri) async {
+  //   Uint8List byteImage = await networkImageToByte(imageUri);
+  //   return byteImage;
+  // }
+  //
+  // convertUint8ToFile(String imageUri) async {
+  //   Uint8List byteImage = await networkImageToByte(imageUri);
+  //   //final imageURI = _networkImageToByte('kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-12 22:59:43.292478Whole.jpg');
+  //   return XFile.fromData(byteImage);
+  // }
+
   Future<void> _uploadToDatabase(File file, String path) async {
     final storageRef = FirebaseStorage.instance.ref();
     final ImageRef = storageRef.child(path);
@@ -89,14 +116,11 @@ class _HomePageState extends State<CropperImage> {
   Future<void> _readFromDatabase(String path) async {
     final storageRef = FirebaseStorage.instance.ref();
     final ImageUrl = await storageRef.child(path).getDownloadURL();
-    // final documentDirectory = await getApplicationDocumentsDirectory();
-    //
-    // final file = File(join(documentDirectory.path, 'imagetest.png'));
-    //
-    // file.writeAsBytesSync(response.bodyBytes);
-    setState(() {
-      temp = ImageUrl;
-    });
+
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final filePath = "${appDocDir.absolute}/images/${ImageUrl}.jpg";
+    final file = File(filePath);
+    final downloadTask = storageRef.child(path).writeToFile(file);
   }
 
   Future<void> _deleteFromDatabase(String path) async {
@@ -107,7 +131,8 @@ class _HomePageState extends State<CropperImage> {
   @override
   void initState() {
     super.initState();
-    //_readFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-08 23:28:55.710012Image Cropper DemoSmall.jpg");
+    print("init");
+    _readFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-12 22:59:43.292478Whole.jpg");
     // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.589960titleSmall.jpg");
     // _deleteFromDatabase("kP1Bw2MDB8dteXntQnStt114QEB2/2022-05-09 00:14:22.597231title.jpg");
   }

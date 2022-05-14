@@ -46,6 +46,14 @@ class _Formbuilder extends State<Formbuilder> {
   CroppedFile? _croppedFile;
   CroppedFile? _smallerCroppedFile;
   String? temp;
+  bool haveImageToggle = false;
+
+  @override
+  void initState() {
+    super.initState();
+    print("document id " + widget.originalCharacter.documentId);
+    haveImageToggle = (widget.originalCharacter.displayPhoto != '' && widget.originalCharacter.facePhoto != '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,34 +96,57 @@ class _Formbuilder extends State<Formbuilder> {
                     labelText: 'Number of things',
                   ),
                 ),
+                haveImageToggle
+                    ? FutureBuilder(
+                        future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
+                        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                          if (snapshot.hasData) {
+                            return WhenHaveImage(snapshot.data![0], snapshot.data![1]);
+                          }
+                          return const Text("error");
+                        })
+                    : ImagePickerAndCropper(),
+                if (widget.originalCharacter.facePhoto != '' && widget.originalCharacter.displayPhoto != '') ...[
+                  MaterialButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                    child: Text(
+                      haveImageToggle ? "Choose new Image" : "Back to original images",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        haveImageToggle = !haveImageToggle;
+                      });
+                    },
+                  ),
+                ],
               ],
             ),
           ),
-          ImagePickerAndCropper(),
           Row(
             children: <Widget>[
               Expanded(
                 child: MaterialButton(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                   child: Text(
                     "Submit",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
                     _formKey.currentState?.save();
-                    if (_smallerCroppedFile != null && _croppedFile != null && _formKey.currentState!.validate()) {
-                      final pathFaceImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Face.jpg";
-                      uploadImageToDatabase(File(_smallerCroppedFile!.path), pathFaceImage);
-                      final pathDisplayImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Display.jpg";
-                      uploadImageToDatabase(File(_croppedFile!.path), pathDisplayImage);
-                      final pathWholeImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Whole.jpg";
-                      uploadImageToDatabase(File(_pickedFile!.path), pathWholeImage);
-
-                      print(_formKey.currentState?.value);
-                      print(_formKey.currentState?.value['name']);
+                    if (!(_pickedFile != null && (_smallerCroppedFile == null || _croppedFile == null)) && _formKey.currentState!.validate()) {
+                      var pathFaceImage = widget.originalCharacter.facePhoto;
+                      var pathDisplayImage = widget.originalCharacter.displayPhoto;
+                      if (_pickedFile != null) {
+                        if (pathDisplayImage != "" && pathFaceImage != "") {
+                          deleteImageFromDatabase(pathDisplayImage);
+                          deleteImageFromDatabase(pathFaceImage);
+                        }
+                        pathFaceImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Face.jpg";
+                        uploadImageToDatabase(File(_smallerCroppedFile!.path), pathFaceImage);
+                        pathDisplayImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Display.jpg";
+                        uploadImageToDatabase(File(_croppedFile!.path), pathDisplayImage);
+                      }
                       Character editedCharacter = Character(
                           name: _formKey.currentState?.value['name'],
                           group: _formKey.currentState?.value['group'],
@@ -124,7 +155,6 @@ class _Formbuilder extends State<Formbuilder> {
                           power: _formKey.currentState?.value['power'],
                           powerDescription: _formKey.currentState?.value['powerDescription'],
                           race: _formKey.currentState?.value['race'],
-                          wholePhoto: pathWholeImage,
                           displayPhoto: pathDisplayImage,
                           facePhoto: pathFaceImage,
                           motto: _formKey.currentState?.value['motto'],
@@ -135,10 +165,11 @@ class _Formbuilder extends State<Formbuilder> {
                           frame: _formKey.currentState?.value['frame'],
                           outfit: _formKey.currentState?.value['outfit'],
                           documentId: widget.originalCharacter.documentId);
-                      addCharacter(editedCharacter);
+                      widget.originalCharacter.documentId == "" ? addCharacter(editedCharacter) : setCharacter(editedCharacter);
+                      widget.callback(editedCharacter);
                     } else {
                       Fluttertoast.showToast(
-                          msg: "One or more have not been cropped or you have not picked and image or you have not filled some fields",
+                          msg: "One or more have not been cropped from chosen image or you have not filled some fields",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -146,41 +177,13 @@ class _Formbuilder extends State<Formbuilder> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     }
-                    // if (_formKey.currentState!.validate()) {
-                    //   print(_formKey.currentState?.value);
-                    // } else {
-                    //   print("validation failed");
-                    //   print(_formKey.currentState?.value);
-                    //   print(_formKey.currentState?.value['name']);
-                    //   Character editedCharacter = Character(
-                    //       name: _formKey.currentState?.value['name'],
-                    //       group: _formKey.currentState?.value['name'],
-                    //       type: _formKey.currentState?.value['name'],
-                    //       gender: _formKey.currentState?.value['name'],
-                    //       power: _formKey.currentState?.value['name'],
-                    //       powerDescription: _formKey.currentState?.value['name'],
-                    //       race: _formKey.currentState?.value['name'],
-                    //       photo: _formKey.currentState?.value['name'],
-                    //       croppedPhoto: _formKey.currentState?.value['name'],
-                    //       motto: _formKey.currentState?.value['name'],
-                    //       catchphrase: _formKey.currentState?.value['name'],
-                    //       description: _formKey.currentState?.value['name'],
-                    //       hair: _formKey.currentState?.value['name'],
-                    //       appearance: _formKey.currentState?.value['name'],
-                    //       frame: _formKey.currentState?.value['name'],
-                    //       outfit: _formKey.currentState?.value['name'],
-                    //       documentId: "");
-                    // }
                   },
                 ),
               ),
               SizedBox(width: 20),
               Expanded(
                 child: MaterialButton(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                   child: Text(
                     "Reset",
                     style: TextStyle(color: Colors.white),
@@ -211,18 +214,99 @@ class _Formbuilder extends State<Formbuilder> {
     }
   }
 
-  Future<void> readImageFromDatabase(String path) async {
+  Future<String> readImageFromDatabase(String path) async {
     final storageRef = FirebaseStorage.instance.ref();
     final ImageUrl = await storageRef.child(path).getDownloadURL();
-    // setState(() {
-    //   temp = ImageUrl;
-    // });
+    return ImageUrl;
   }
 
   Future<void> deleteImageFromDatabase(String path) async {
     final storageRef = FirebaseStorage.instance.ref();
     await storageRef.child(path).delete();
   }
+
+  Widget WhenHaveImage(String smallImageUrl, String bigImageUrl) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+        child: Card(
+          elevation: 4.0,
+          child: Padding(
+            padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 0.8 * screenWidth,
+                maxHeight: 0.7 * screenHeight,
+              ),
+              child: Image.network(smallImageUrl),
+            ),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+        child: Card(
+          elevation: 4.0,
+          child: Padding(
+            padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 0.8 * screenWidth,
+                maxHeight: 0.7 * screenHeight,
+              ),
+              child: Image.network(bigImageUrl),
+            ),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  // Widget WhenHaveImage(String smallImageUrl, String bigImageUrl) {
+  //   final screenWidth = MediaQuery.of(context).size.width;
+  //   final screenHeight = MediaQuery.of(context).size.height;
+  //   return FutureBuilder(
+  //     future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
+  //     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+  //       return Column(children: [
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+  //           child: Card(
+  //             elevation: 4.0,
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+  //               child: ConstrainedBox(
+  //                 constraints: BoxConstraints(
+  //                   maxWidth: 0.8 * screenWidth,
+  //                   maxHeight: 0.7 * screenHeight,
+  //                 ),
+  //                 child: Image.network(snapshot.data![0]),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+  //           child: Card(
+  //             elevation: 4.0,
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+  //               child: ConstrainedBox(
+  //                 constraints: BoxConstraints(
+  //                   maxWidth: 0.8 * screenWidth,
+  //                   maxHeight: 0.7 * screenHeight,
+  //                 ),
+  //                 child: Image.network(snapshot.data![1]),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ]);
+  //     },
+  //   );
+  // }
 
   Widget ImagePickerAndCropper() {
     if (_smallerCroppedFile != null || _croppedFile != null || _pickedFile != null) {
@@ -271,14 +355,8 @@ class _Formbuilder extends State<Formbuilder> {
   }
 
   Widget _image() {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     if (_croppedFile != null) {
       final path = _croppedFile!.path;
       return ConstrainedBox(
@@ -303,14 +381,8 @@ class _Formbuilder extends State<Formbuilder> {
   }
 
   Widget _image2() {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     if (_smallerCroppedFile != null) {
       final path = _smallerCroppedFile!.path;
       return ConstrainedBox(
@@ -462,10 +534,7 @@ class _Formbuilder extends State<Formbuilder> {
                     radius: const Radius.circular(12.0),
                     borderType: BorderType.RRect,
                     dashPattern: const [8, 4],
-                    color: Theme
-                        .of(context)
-                        .highlightColor
-                        .withOpacity(0.4),
+                    color: Theme.of(context).highlightColor.withOpacity(0.4),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -473,29 +542,15 @@ class _Formbuilder extends State<Formbuilder> {
                         children: [
                           Icon(
                             Icons.image,
-                            color: Theme
-                                .of(context)
-                                .highlightColor,
+                            color: Theme.of(context).highlightColor,
                             size: 80.0,
                           ),
                           const SizedBox(height: 24.0),
                           Text(
                             'Upload an image to start',
                             style: kIsWeb
-                                ? Theme
-                                .of(context)
-                                .textTheme
-                                .headline5!
-                                .copyWith(color: Theme
-                                .of(context)
-                                .highlightColor)
-                                : Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(color: Theme
-                                .of(context)
-                                .highlightColor),
+                                ? Theme.of(context).textTheme.headline5!.copyWith(color: Theme.of(context).highlightColor)
+                                : Theme.of(context).textTheme.bodyText2!.copyWith(color: Theme.of(context).highlightColor),
                           )
                         ],
                       ),
@@ -564,8 +619,7 @@ class CustomTextField extends StatelessWidget {
   final String initialValue;
 
   @override
-  Widget build(BuildContext context) =>
-      FormBuilderTextField(
+  Widget build(BuildContext context) => FormBuilderTextField(
         initialValue: initialValue,
         name: name,
         decoration: InputDecoration(
@@ -587,8 +641,7 @@ class ChoiceChip extends StatelessWidget {
   final List options;
 
   @override
-  Widget build(BuildContext context) =>
-      FormBuilderChoiceChip(
+  Widget build(BuildContext context) => FormBuilderChoiceChip(
         spacing: 5,
         initialValue: initialValue,
         name: name,
@@ -601,7 +654,7 @@ class ChoiceChip extends StatelessWidget {
             .entries
             .map(
               (item) => FormBuilderFieldOption(value: item.key, child: Text(item.value)),
-        )
+            )
             .toList(),
       );
 }

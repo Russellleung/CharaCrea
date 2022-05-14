@@ -70,7 +70,6 @@ class CharacterListProvider with ChangeNotifier {
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
           displayPhoto: document.data()["displayPhoto"],
-          wholePhoto: document.data()["wholePhoto"],
           facePhoto: document.data()['facePhoto'],
           motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
@@ -101,7 +100,6 @@ class CharacterListProvider with ChangeNotifier {
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
           displayPhoto: document.data()["displayPhoto"],
-          wholePhoto: document.data()["wholePhoto"],
           facePhoto: document.data()['facePhoto'],
           motto: document.data()["motto"],
           catchphrase: document.data()["catchphrase"],
@@ -130,7 +128,6 @@ class Character {
     this.power = '',
     this.powerDescription = '',
     this.race = '',
-    this.wholePhoto = '',
     this.displayPhoto = '',
     this.facePhoto = '',
     this.motto = '',
@@ -150,7 +147,6 @@ class Character {
   final String power;
   final String powerDescription;
   final String race;
-  final String wholePhoto;
   final String displayPhoto;
   final String facePhoto;
   final String motto;
@@ -170,7 +166,6 @@ class Character {
         'power': power,
         'powerDescription': powerDescription,
         'race': race,
-        'wholePhoto': wholePhoto,
         'displayPhoto': displayPhoto,
         'facePhoto': facePhoto,
         'motto': motto,
@@ -191,7 +186,6 @@ class Character {
         power: power,
         powerDescription: powerDescription,
         race: race,
-        wholePhoto: wholePhoto,
         displayPhoto: displayPhoto,
         facePhoto: facePhoto,
         motto: motto,
