@@ -78,6 +78,7 @@ _displayDialog(BuildContext context, Character character) async {
                 deleteImageFromDatabase(character.displayPhoto);
               }
               deleteCharacter(character);
+              Navigator.of(context).pop();
             },
             child: Text(
               'YES',
