@@ -200,31 +200,6 @@ class _Formbuilder extends State<Formbuilder> {
     );
   }
 
-  Future<void> uploadImageToDatabase(File file, String path) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final ImageRef = storageRef.child(path);
-    try {
-      await ImageRef.putFile(
-          file,
-          SettableMetadata(
-            contentType: "name/jpeg",
-          ));
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  Future<String> readImageFromDatabase(String path) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final ImageUrl = await storageRef.child(path).getDownloadURL();
-    return ImageUrl;
-  }
-
-  Future<void> deleteImageFromDatabase(String path) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    await storageRef.child(path).delete();
-  }
-
   Widget WhenHaveImage(String smallImageUrl, String bigImageUrl) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;

@@ -87,8 +87,7 @@ class CharacterListProvider with ChangeNotifier {
   Future<void> setCharacterProvider() async {
     String id = FirebaseAuth.instance.currentUser!.uid;
     print("id" + id);
-    characterListSubscription =
-        FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
+    characterListSubscription = FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
       _allCharacters = [];
       for (final document in snapshot.docs) {
         _allCharacters.add(Character(
@@ -221,28 +220,39 @@ class Character {
       };
 }
 
+Future<void> uploadImageToDatabase(File file, String path) async {
+  final storageRef = FirebaseStorage.instance.ref();
+  final ImageRef = storageRef.child(path);
+  try {
+    await ImageRef.putFile(
+        file,
+        SettableMetadata(
+          contentType: "name/jpeg",
+        ));
+  } catch (error) {
+    print(error);
+  }
+}
+
+Future<String> readImageFromDatabase(String path) async {
+  final storageRef = FirebaseStorage.instance.ref();
+  final ImageUrl = await storageRef.child(path).getDownloadURL();
+  return ImageUrl;
+}
+
+Future<void> deleteImageFromDatabase(String path) async {
+  final storageRef = FirebaseStorage.instance.ref();
+  await storageRef.child(path).delete();
+}
+
 Future addCharacter(Character character) async {
-  return await FirebaseFirestore.instance
-      .collection('userCharacters')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('characters')
-      .add(character.toJson());
+  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').add(character.toJson());
 }
 
 Future setCharacter(Character character) async {
-  return await FirebaseFirestore.instance
-      .collection('userCharacters')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('characters')
-      .doc(character.documentId)
-      .set(character.toJson());
+  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).set(character.toJson());
 }
 
 Future deleteCharacter(Character character) async {
-  return await FirebaseFirestore.instance
-      .collection('userCharacters')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('characters')
-      .doc(character.documentId)
-      .delete();
+  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).delete();
 }
