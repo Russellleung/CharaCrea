@@ -52,157 +52,150 @@ class _Formbuilder extends State<Formbuilder> {
   @override
   void initState() {
     super.initState();
-    print("document id " + widget.originalCharacter.documentId);
     haveImageToggle = (widget.originalCharacter.displayPhoto != '' && widget.originalCharacter.facePhoto != '');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Form'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          FormBuilder(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                CustomTextField('name', widget.originalCharacter.name),
-                CustomTextField('power', widget.originalCharacter.power),
-                CustomTextField('powerDescription', widget.originalCharacter.powerDescription),
-                CustomTextField('race', widget.originalCharacter.race),
-                CustomTextField('motto', widget.originalCharacter.motto),
-                CustomTextField('catchphrase', widget.originalCharacter.catchphrase),
-                CustomTextField('description', widget.originalCharacter.description),
-                CustomTextField('hair', widget.originalCharacter.hair),
-                CustomTextField('appearance', widget.originalCharacter.appearance),
-                CustomTextField('frame', widget.originalCharacter.frame),
-                CustomTextField('outfit', widget.originalCharacter.outfit),
-                ChoiceChip('group', groupOptions, widget.originalCharacter.group),
-                ChoiceChip('type', typeOptions, widget.originalCharacter.type),
-                ChoiceChip('gender', genderOptions, widget.originalCharacter.gender),
-                ChoiceChip('powerOrigin', powerOriginOptions, widget.originalCharacter.powerOrigin),
-                FormBuilderSlider(
-                  name: 'slider',
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.min(6),
-                  ]),
-                  min: 0.0,
-                  max: 10.0,
-                  initialValue: 7.0,
-                  divisions: 20,
-                  activeColor: Colors.red,
-                  inactiveColor: Colors.pink[100],
-                  decoration: const InputDecoration(
-                    labelText: 'Number of things',
-                  ),
-                ),
-                haveImageToggle
-                    ? FutureBuilder(
-                        future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
-                        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                          if (snapshot.hasData) {
-                            return WhenHaveImage(snapshot.data![0], snapshot.data![1]);
-                          }
-                          return const Text("error");
-                        })
-                    : ImagePickerAndCropper(),
-                if (widget.originalCharacter.facePhoto != '' && widget.originalCharacter.displayPhoto != '') ...[
-                  MaterialButton(
-                    color: Theme.of(context).colorScheme.secondary,
-                    child: Text(
-                      haveImageToggle ? "Choose new Image" : "Back to original images",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        haveImageToggle = !haveImageToggle;
-                      });
-                    },
-                  ),
-                ],
-              ],
-            ),
-          ),
-          Row(
+    return ListView(
+      children: <Widget>[
+        FormBuilder(
+          key: _formKey,
+          child: Column(
             children: <Widget>[
-              Expanded(
-                child: MaterialButton(
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    _formKey.currentState?.save();
-                    print(_formKey.currentState?.value);
-                    if (!(_pickedFile != null && (_smallerCroppedFile == null || _croppedFile == null)) && _formKey.currentState!.validate()) {
-                      var pathFaceImage = widget.originalCharacter.facePhoto;
-                      var pathDisplayImage = widget.originalCharacter.displayPhoto;
-                      if (_pickedFile != null) {
-                        if (pathDisplayImage != "" && pathFaceImage != "") {
-                          deleteImageFromDatabase(pathDisplayImage);
-                          deleteImageFromDatabase(pathFaceImage);
+              CustomTextField('name', widget.originalCharacter.name),
+              CustomTextField('power', widget.originalCharacter.power),
+              CustomTextField('powerDescription', widget.originalCharacter.powerDescription),
+              CustomTextField('race', widget.originalCharacter.race),
+              CustomTextField('motto', widget.originalCharacter.motto),
+              CustomTextField('catchphrase', widget.originalCharacter.catchphrase),
+              CustomTextField('description', widget.originalCharacter.description),
+              CustomTextField('hair', widget.originalCharacter.hair),
+              CustomTextField('appearance', widget.originalCharacter.appearance),
+              CustomTextField('frame', widget.originalCharacter.frame),
+              CustomTextField('outfit', widget.originalCharacter.outfit),
+              ChoiceChip('group', groupOptions, widget.originalCharacter.group),
+              ChoiceChip('type', typeOptions, widget.originalCharacter.type),
+              ChoiceChip('gender', genderOptions, widget.originalCharacter.gender),
+              ChoiceChip('powerOrigin', powerOriginOptions, widget.originalCharacter.powerOrigin),
+              FormBuilderSlider(
+                name: 'slider',
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.min(6),
+                ]),
+                min: 0.0,
+                max: 10.0,
+                initialValue: 7.0,
+                divisions: 20,
+                activeColor: Colors.red,
+                inactiveColor: Colors.pink[100],
+                decoration: const InputDecoration(
+                  labelText: 'Number of things',
+                ),
+              ),
+              haveImageToggle
+                  ? FutureBuilder(
+                      future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
+                      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                        if (snapshot.hasData) {
+                          return WhenHaveImage(snapshot.data![0], snapshot.data![1]);
                         }
-                        pathFaceImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Face.jpg";
-                        uploadImageToDatabase(File(_smallerCroppedFile!.path), pathFaceImage);
-                        pathDisplayImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Display.jpg";
-                        uploadImageToDatabase(File(_croppedFile!.path), pathDisplayImage);
-                      }
-                      Character editedCharacter = Character(
-                          name: _formKey.currentState?.value['name'],
-                          group: _formKey.currentState?.value['group'],
-                          type: _formKey.currentState?.value['type'],
-                          gender: _formKey.currentState?.value['gender'],
-                          power: _formKey.currentState?.value['power'],
-                          powerOrigin: _formKey.currentState?.value['powerOrigin'],
-                          powerDescription: _formKey.currentState?.value['powerDescription'],
-                          race: _formKey.currentState?.value['race'],
-                          displayPhoto: pathDisplayImage,
-                          facePhoto: pathFaceImage,
-                          motto: _formKey.currentState?.value['motto'],
-                          catchphrase: _formKey.currentState?.value['catchphrase'],
-                          description: _formKey.currentState?.value['description'],
-                          hair: _formKey.currentState?.value['hair'],
-                          appearance: _formKey.currentState?.value['appearance'],
-                          frame: _formKey.currentState?.value['frame'],
-                          outfit: _formKey.currentState?.value['outfit'],
-                          documentId: widget.originalCharacter.documentId);
-                      widget.originalCharacter.documentId == "" ? addCharacter(editedCharacter) : setCharacter(editedCharacter);
-                      widget.callback(editedCharacter);
-                      Navigator.of(context).pop();
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "One or more have not been cropped from chosen image or you have not filled some fields",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  },
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: MaterialButton(
+                        return const Text("error");
+                      })
+                  : ImagePickerAndCropper(),
+              if (widget.originalCharacter.facePhoto != '' && widget.originalCharacter.displayPhoto != '') ...[
+                MaterialButton(
                   color: Theme.of(context).colorScheme.secondary,
                   child: Text(
-                    "Reset",
+                    haveImageToggle ? "Choose new Image" : "Back to original images",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    _formKey.currentState?.reset();
+                    setState(() {
+                      haveImageToggle = !haveImageToggle;
+                    });
                   },
                 ),
-              ),
+              ],
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: MaterialButton(
+                color: Theme.of(context).colorScheme.secondary,
+                child: Text(
+                  "Submit",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  _formKey.currentState?.save();
+                  print(_formKey.currentState?.value);
+                  if (!(_pickedFile != null && (_smallerCroppedFile == null || _croppedFile == null)) && _formKey.currentState!.validate()) {
+                    var pathFaceImage = widget.originalCharacter.facePhoto;
+                    var pathDisplayImage = widget.originalCharacter.displayPhoto;
+                    if (_pickedFile != null) {
+                      if (pathDisplayImage != "" && pathFaceImage != "") {
+                        deleteImageFromDatabase(pathDisplayImage);
+                        deleteImageFromDatabase(pathFaceImage);
+                      }
+                      pathFaceImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Face.jpg";
+                      uploadImageToDatabase(File(_smallerCroppedFile!.path), pathFaceImage);
+                      pathDisplayImage = "${FirebaseAuth.instance.currentUser?.uid}/${DateTime.now()}Display.jpg";
+                      uploadImageToDatabase(File(_croppedFile!.path), pathDisplayImage);
+                    }
+                    Character editedCharacter = Character(
+                        name: _formKey.currentState?.value['name'],
+                        group: _formKey.currentState?.value['group'],
+                        type: _formKey.currentState?.value['type'],
+                        gender: _formKey.currentState?.value['gender'],
+                        power: _formKey.currentState?.value['power'],
+                        powerOrigin: _formKey.currentState?.value['powerOrigin'],
+                        powerDescription: _formKey.currentState?.value['powerDescription'],
+                        race: _formKey.currentState?.value['race'],
+                        displayPhoto: pathDisplayImage,
+                        facePhoto: pathFaceImage,
+                        motto: _formKey.currentState?.value['motto'],
+                        catchphrase: _formKey.currentState?.value['catchphrase'],
+                        description: _formKey.currentState?.value['description'],
+                        hair: _formKey.currentState?.value['hair'],
+                        appearance: _formKey.currentState?.value['appearance'],
+                        frame: _formKey.currentState?.value['frame'],
+                        outfit: _formKey.currentState?.value['outfit'],
+                        documentId: widget.originalCharacter.documentId);
+                    widget.originalCharacter.documentId == "" ? addCharacter(editedCharacter) : setCharacter(editedCharacter);
+                    widget.callback(editedCharacter);
+                    Navigator.of(context).pop();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "One or more have not been cropped from chosen image or you have not filled some fields",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: MaterialButton(
+                color: Theme.of(context).colorScheme.secondary,
+                child: Text(
+                  "Reset",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  _formKey.currentState?.reset();
+                },
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 

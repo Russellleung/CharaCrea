@@ -87,7 +87,6 @@ class CharacterListProvider with ChangeNotifier {
 
   Future<void> setCharacterProvider() async {
     String id = FirebaseAuth.instance.currentUser!.uid;
-    print("id" + id);
     characterListSubscription = FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
       _allCharacters = [];
       for (final document in snapshot.docs) {
