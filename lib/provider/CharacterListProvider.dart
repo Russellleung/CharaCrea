@@ -251,13 +251,19 @@ Future<void> deleteImageFromDatabase(String path) async {
 }
 
 Future addCharacter(Character character) async {
-  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').add(character.toJson());
+  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').add(character.toJson());
+  Fluttertoast.showToast(
+      msg: "Character Added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
 }
 
 Future setCharacter(Character character) async {
-  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).set(character.toJson());
+  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).set(character.toJson());
+  Fluttertoast.showToast(
+      msg: "Character Set", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
 }
 
 Future deleteCharacter(Character character) async {
-  return await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).delete();
+  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).delete();
+  Fluttertoast.showToast(
+      msg: "Character Deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
 }

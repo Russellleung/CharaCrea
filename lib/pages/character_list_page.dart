@@ -43,10 +43,7 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
   void dispose() {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
-    context
-        .read<CharacterListProvider>()
-        .characterListSubscription
-        ?.cancel();
+    context.read<CharacterListProvider>().characterListSubscription?.cancel();
     super.dispose();
   }
 
@@ -56,12 +53,8 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
 
   searchResultsList() {
     if (_searchController.text != "") {
-      context
-          .read<CharacterListProvider>()
-          .filteredCharacters = [];
-      for (var character in context
-          .read<CharacterListProvider>()
-          .allCharacters) {
+      context.read<CharacterListProvider>().filteredCharacters = [];
+      for (var character in context.read<CharacterListProvider>().allCharacters) {
         var title = character.name.toLowerCase();
 
         if (title.contains(_searchController.text.toLowerCase())) {
@@ -69,11 +62,7 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
         }
       }
     } else {
-      context
-          .read<CharacterListProvider>()
-          .filteredCharacters = context
-          .read<CharacterListProvider>()
-          .allCharacters;
+      context.read<CharacterListProvider>().filteredCharacters = context.read<CharacterListProvider>().allCharacters;
     }
   }
 
@@ -82,7 +71,7 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
     return Container(
       child: Column(
         children: <Widget>[
-          Text("Past Trips", style: TextStyle(fontSize: 20)),
+          Text("search characters", style: TextStyle(fontSize: 20)),
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
             child: TextField(
@@ -92,20 +81,10 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
           ),
           Expanded(
               child: ListView.builder(
-                itemCount: context
-                    .watch<CharacterListProvider>()
-                    .filteredCharacters
-                    .length,
-                itemBuilder: (BuildContext context, int index) =>
-                    CharacterCard(context, context
-                        .read<CharacterListProvider>()
-                        .filteredCharacters[index]),
-              )),
-          Text(context
-              .watch<CharacterListProvider>()
-              .filteredCharacters
-              .length
-              .toString()),
+            itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
+            itemBuilder: (BuildContext context, int index) => CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
+          )),
+          Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
           FloatingActionButton(
             onPressed: () {
               Navigator.of(context, rootNavigator: false).push(

@@ -166,7 +166,9 @@ class _Formbuilder extends State<Formbuilder> {
                         documentId: widget.originalCharacter.documentId);
                     widget.originalCharacter.documentId == "" ? addCharacter(editedCharacter) : setCharacter(editedCharacter);
                     widget.callback(editedCharacter);
-                    Navigator.of(context).pop();
+                    if (widget.originalCharacter.documentId == "") {
+                      Navigator.of(context).pop();
+                    }
                   } else {
                     Fluttertoast.showToast(
                         msg: "One or more have not been cropped from chosen image or you have not filled some fields",
