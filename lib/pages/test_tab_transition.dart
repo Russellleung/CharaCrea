@@ -48,13 +48,13 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
             controller: _tabController,
             tabs: <Widget>[
               Tab(
-                text: '2018',
+                text: 'Full Screen',
               ),
               Tab(
-                text: '2019',
+                text: 'Details',
               ),
               Tab(
-                text: '2020',
+                text: 'Changes',
               ),
             ],
           ),
@@ -71,6 +71,7 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
             // Container(
             //   color: Colors.deepPurple,
             // )
+            CharacterFullScreenPage(title: "title", message: "message"),
             CharacterDetailedPage(character: widget.character),
             // CharacterEditPage(
             //     originalCharacter: widget.character,
@@ -87,7 +88,7 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
                 });
               },
             ),
-            CharacterFullScreenPage(title: "title", message: "message"),
+
           ],
         ),
       ),
