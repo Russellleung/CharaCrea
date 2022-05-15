@@ -31,7 +31,7 @@ class _Formbuilder extends State<Formbuilder> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   List genderOptions = ['male', 'female', 'other'];
-  List groupOptions = ['Frontier', 'Mission', 'Mystery', 'War', 'New', 'Clandestine', 'Commando', 'Separate'];
+  List groupOptions = ['Frontier', 'Stars', 'Mystery', 'War', 'Generation', 'Clandestine', 'Commando', 'Enforcer'];
   List typeOptions = [
     'AOE',
     'Tank',
@@ -39,8 +39,9 @@ class _Formbuilder extends State<Formbuilder> {
     'Striker',
     'Defense',
     'Stealth',
-    'Wild',
+    'Rogue',
   ];
+  List powerOriginOptions = ["Cabal", "Technology", "Mystical", "Ability", "Transcendent", "Empirical"];
 
   XFile? _pickedFile;
   CroppedFile? _croppedFile;
@@ -58,6 +59,7 @@ class _Formbuilder extends State<Formbuilder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Form'),
       ),
@@ -81,6 +83,7 @@ class _Formbuilder extends State<Formbuilder> {
                 ChoiceChip('group', groupOptions, widget.originalCharacter.group),
                 ChoiceChip('type', typeOptions, widget.originalCharacter.type),
                 ChoiceChip('gender', genderOptions, widget.originalCharacter.gender),
+                ChoiceChip('powerOrigin', powerOriginOptions, widget.originalCharacter.powerOrigin),
                 FormBuilderSlider(
                   name: 'slider',
                   validator: FormBuilderValidators.compose([
@@ -134,6 +137,7 @@ class _Formbuilder extends State<Formbuilder> {
                   ),
                   onPressed: () {
                     _formKey.currentState?.save();
+                    print(_formKey.currentState?.value);
                     if (!(_pickedFile != null && (_smallerCroppedFile == null || _croppedFile == null)) && _formKey.currentState!.validate()) {
                       var pathFaceImage = widget.originalCharacter.facePhoto;
                       var pathDisplayImage = widget.originalCharacter.displayPhoto;
@@ -153,6 +157,7 @@ class _Formbuilder extends State<Formbuilder> {
                           type: _formKey.currentState?.value['type'],
                           gender: _formKey.currentState?.value['gender'],
                           power: _formKey.currentState?.value['power'],
+                          powerOrigin: _formKey.currentState?.value['powerOrigin'],
                           powerDescription: _formKey.currentState?.value['powerDescription'],
                           race: _formKey.currentState?.value['race'],
                           displayPhoto: pathDisplayImage,
@@ -167,6 +172,7 @@ class _Formbuilder extends State<Formbuilder> {
                           documentId: widget.originalCharacter.documentId);
                       widget.originalCharacter.documentId == "" ? addCharacter(editedCharacter) : setCharacter(editedCharacter);
                       widget.callback(editedCharacter);
+                      Navigator.of(context).pop();
                     } else {
                       Fluttertoast.showToast(
                           msg: "One or more have not been cropped from chosen image or you have not filled some fields",

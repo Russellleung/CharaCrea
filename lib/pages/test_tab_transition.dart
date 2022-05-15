@@ -41,6 +41,7 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Sample'),
           bottom: TabBar(

@@ -67,6 +67,7 @@ class CharacterListProvider with ChangeNotifier {
           type: document.data()["type"],
           gender: document.data()["gender"],
           power: document.data()["power"],
+          powerOrigin: document.data()["powerOrigin"],
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
           displayPhoto: document.data()["displayPhoto"],
@@ -96,6 +97,7 @@ class CharacterListProvider with ChangeNotifier {
           type: document.data()["type"],
           gender: document.data()["gender"],
           power: document.data()["power"],
+          powerOrigin: document.data()["powerOrigin"],
           powerDescription: document.data()["powerDescription"],
           race: document.data()["race"],
           displayPhoto: document.data()["displayPhoto"],
@@ -125,6 +127,7 @@ class Character {
     this.type = 0,
     this.gender = 0,
     this.power = '',
+    this.powerOrigin = 0,
     this.powerDescription = '',
     this.race = '',
     this.displayPhoto = '',
@@ -144,6 +147,7 @@ class Character {
   final int type;
   final int gender;
   final String power;
+  final int powerOrigin;
   final String powerDescription;
   final String race;
   final String displayPhoto;
@@ -163,6 +167,7 @@ class Character {
         'type': type,
         'gender': gender,
         'power': power,
+        'powerOrigin': powerOrigin,
         'powerDescription': powerDescription,
         'race': race,
         'displayPhoto': displayPhoto,
@@ -183,6 +188,7 @@ class Character {
         type: type,
         gender: gender,
         power: power,
+        powerOrigin: powerOrigin,
         powerDescription: powerDescription,
         race: race,
         displayPhoto: displayPhoto,
