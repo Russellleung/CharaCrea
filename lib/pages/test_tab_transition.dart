@@ -38,63 +38,59 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text('Sample'),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: <Widget>[
-              Tab(
-                text: 'Full Screen',
-              ),
-              Tab(
-                text: 'Details',
-              ),
-              Tab(
-                text: 'Changes',
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Sample'),
+        bottom: TabBar(
           controller: _tabController,
-          children: [
-            // Container(
-            //   color: Colors.pink,
-            // ),
-            // Container(
-            //   color: Colors.blue,
-            // ),
-            // Container(
-            //   color: Colors.deepPurple,
-            // )
-            CharacterFullScreenPage(title: "title", message: "message"),
-            CharacterDetailedPage(character: widget.character),
-            // CharacterEditPage(
-            //     originalCharacter: widget.character,
-            //     callback: (character) {
-            //       setState(() {
-            //         widget.character = character;
-            //       });
-            //     }),
-            Formbuilder(
-              originalCharacter: widget.character,
-              callback: (Character character) {
-                setState(() {
-                  widget.character = character;
-                });
-              },
+          tabs: <Widget>[
+            Tab(
+              text: 'Full Screen',
             ),
-
+            Tab(
+              text: 'Details',
+            ),
+            Tab(
+              text: 'Changes',
+            ),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          // Container(
+          //   color: Colors.pink,
+          // ),
+          // Container(
+          //   color: Colors.blue,
+          // ),
+          // Container(
+          //   color: Colors.deepPurple,
+          // )
+          CharacterFullScreenPage(title: "title", message: "message"),
+          CharacterDetailedPage(character: widget.character),
+          // CharacterEditPage(
+          //     originalCharacter: widget.character,
+          //     callback: (character) {
+          //       setState(() {
+          //         widget.character = character;
+          //       });
+          //     }),
+          Formbuilder(
+            originalCharacter: widget.character,
+            callback: (Character character) {
+              setState(() {
+                widget.character = character;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+// @override
+// bool get wantKeepAlive => true;
 }

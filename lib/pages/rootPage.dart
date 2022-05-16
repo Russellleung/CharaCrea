@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
+import 'Character_detailed_page.dart';
 import 'character_carousell.dart';
 import 'character_list_page.dart';
 import '../widgets/imageCropper.dart';
@@ -37,7 +38,9 @@ class _RootPage extends State<RootPage> {
         },
       ),
       CropperImage(title: "title"),
-      uploadImage(),
+      DetailsInSlider(
+        character: Character(),
+      ),
     ];
 
     return MaterialApp(
