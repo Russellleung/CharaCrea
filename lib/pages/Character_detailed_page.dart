@@ -1,5 +1,6 @@
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:characrea/main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ui_helper/ui_helper.dart';
@@ -19,6 +20,27 @@ class CharacterDetailedPage extends StatefulWidget {
 class _CharacterDetailedPage extends State<CharacterDetailedPage> {
   bool panelOpen = false;
 
+  Widget DisplayImage(String bigImageUrl) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
+      child: Card(
+        elevation: 4.0,
+        child: Padding(
+          padding: EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 0.8 * screenWidth,
+              maxHeight: 0.7 * screenHeight,
+            ),
+            child: Image.network(bigImageUrl),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = BorderRadius.only(
@@ -26,48 +48,57 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
       topRight: Radius.circular(24.0),
     );
     return SlidingUpPanel(
-        onPanelClosed: () {
-          setState(() {
-            panelOpen = false;
-          });
-        },
-        onPanelOpened: () {
-          setState(() {
-            panelOpen = true;
-          });
-        },
-        maxHeight: MediaQuery.of(context).size.height * .30,
-        minHeight: MediaQuery.of(context).size.height * .05,
-        panel: DetailsInSlider(
-          character: widget.character,
-        ),
-        collapsed: Container(
-          decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
-          child: Center(
-            child: Text(
-              "Drag up Character Details",
-              style: TextStyle(color: Colors.white),
-            ),
+      onPanelClosed: () {
+        setState(() {
+          panelOpen = false;
+        });
+      },
+      onPanelOpened: () {
+        setState(() {
+          panelOpen = true;
+        });
+      },
+      maxHeight: MediaQuery.of(context).size.height * .30,
+      minHeight: MediaQuery.of(context).size.height * .05,
+      panel: DetailsInSlider(
+        character: widget.character,
+      ),
+      collapsed: Container(
+        decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
+        child: Center(
+          child: Text(
+            "Drag up Character Details",
+            style: TextStyle(color: Colors.white),
           ),
         ),
-        borderRadius: radius,
-        body: ListView(children: <Widget>[
-          Image.asset('assets/codelab.png'),
-          const SizedBox(height: 8),
-          IconAndDetail(Icons.abc_rounded, widget.character.name),
-          IconAndDetail(Icons.dangerous, widget.character.power),
-          const Divider(
-            height: 8,
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
-          const Header("What we'll be doing"),
-          const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
-          ),
-        ]));
+      ),
+      borderRadius: radius,
+      body: Column(children: [
+        IconImageAndDetail('assets/group/orbital.png', "Group"),
+        IconAndDetail(Icons.access_time, widget.character.name),
+        FutureBuilder(
+            future: Future.wait([readImageFromDatabase(widget.character.displayPhoto)]),
+            builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+              if (snapshot.hasData) {
+                return DisplayImage(snapshot.data![0]);
+              }
+              return const Text("error");
+            }),
+        // const SizedBox(height: 8),
+
+        // const Divider(
+        //   height: 8,
+        //   thickness: 1,
+        //   indent: 8,
+        //   endIndent: 8,
+        //   color: Colors.grey,
+        // ),
+        // const Header("What we'll be doing"),
+        // const Paragraph(
+        //   'Join us for a day full of Firebase Workshops and Pizza!',
+        // ),
+      ]),
+    );
   }
 }
 
