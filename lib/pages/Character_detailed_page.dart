@@ -41,19 +41,15 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
         panel: DetailsInSlider(
           character: widget.character,
         ),
-        collapsed: panelOpen == false
-            ? Container(
-                decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
-                child: Center(
-                  child: Text(
-                    "Drag up Character Details",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
-              ),
+        collapsed: Container(
+          decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
+          child: Center(
+            child: Text(
+              "Drag up Character Details",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
         borderRadius: radius,
         body: ListView(children: <Widget>[
           Image.asset('assets/codelab.png'),
@@ -83,80 +79,101 @@ class DetailsInSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: TabBar(
-          labelColor: Colors.deepOrange,
-          unselectedLabelColor: Colors.lightGreen,
-          tabs: [
-            Tab(
-              icon: Icon(Icons.directions_car),
-            ),
-            Tab(icon: Icon(Icons.directions_transit)),
-            Tab(icon: Icon(Icons.directions_bike)),
-          ],
-        ),
-        body: TabBarView(
+        length: 3,
+        child: Column(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Icon(Icons.directions_car),
-                  Text(character.name),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
+            Container(
+              decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.0),
+                    topRight: Radius.circular(24.0),
+                  )),
+              child: const TabBar(
+                labelColor: Colors.deepOrange,
+                unselectedLabelColor: Colors.lightGreen,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.directions_car,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.directions_transit,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.directions_bike,
+                    ),
+                  ),
                 ],
               ),
             ),
-            SingleChildScrollView(
-              child: Column(
+            Expanded(
+              child: TabBarView(
                 children: [
-                  Icon(Icons.directions_transit),
-                  Text(character.power),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Icon(Icons.directions_bike),
-                  Text(character.powerDescription),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
-                  Icon(Icons.directions_car),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Icon(Icons.directions_car),
+                        Text(character.name),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Icon(Icons.directions_transit),
+                        Text(character.power),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Icon(Icons.directions_bike),
+                        Text(character.powerDescription),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                        Icon(Icons.directions_car),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
