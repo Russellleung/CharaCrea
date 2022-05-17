@@ -95,7 +95,8 @@ class _Formbuilder extends State<Formbuilder> {
               ),
               haveImageToggle
                   ? FutureBuilder(
-                      future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
+                      future: Future.wait(
+                          [readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
                       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                         if (snapshot.hasData) {
                           return WhenHaveImage(snapshot.data![0], snapshot.data![1]);
