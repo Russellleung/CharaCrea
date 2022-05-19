@@ -20,6 +20,14 @@ class CharacterDetailedPage extends StatefulWidget {
 class _CharacterDetailedPage extends State<CharacterDetailedPage> {
   bool panelOpen = false;
 
+  Widget DisplayBlankImage() {
+    return Image.asset(
+      'assets/egg-eye.png',
+      width: 70,
+      height: 70,
+    );
+  }
+
   Widget DisplayImage(String bigImageUrl) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -74,7 +82,7 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
       ),
       borderRadius: radius,
       body: Column(children: [
-        IconImageAndDetail('assets/group/orbital.png', "Group"),
+        IconImageAndDetail(widget.character.groupImage(), widget.character.groupWord()),
         IconAndDetail(Icons.access_time, widget.character.name),
         FutureBuilder(
             future: Future.wait([readImageFromDatabase(widget.character.displayPhoto)]),
@@ -82,7 +90,7 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
               if (snapshot.hasData) {
                 return DisplayImage(snapshot.data![0]);
               }
-              return const Text("error");
+              return DisplayBlankImage();
             }),
         // const SizedBox(height: 8),
 

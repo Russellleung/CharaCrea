@@ -87,7 +87,8 @@ class CharacterListProvider with ChangeNotifier {
 
   Future<void> setCharacterProvider() async {
     String id = FirebaseAuth.instance.currentUser!.uid;
-    characterListSubscription = FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
+    characterListSubscription =
+        FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
       _allCharacters = [];
       for (final document in snapshot.docs) {
         _allCharacters.add(Character(
@@ -202,18 +203,88 @@ class Character {
         documentId: documentId);
   }
 
-// Character.fromSnapshot(DocumentSnapshot snapshot)
-//     :
-//       name = snapshot.data()['name'],
-//       group = snapshot.data()['group'],
-//       type = snapshot.data()['type'],
-//       power = snapshot.data()['power'],
-//       race = snapshot.data()['race'],
-//       photo = snapshot.data()['photo'],
-//       croppedPhoto = snapshot.data()['croppedPhoto'],
-//       catchphrase = snapshot.data()['catchphrase'],
-//       description = snapshot.data()['description'],
-//       documentId = snapshot.id;
+  static List genderOptions = ['male', 'female', 'other'];
+  static List groupOptions = [
+    'Frontier',
+    'Stars',
+    'Clandestine',
+    'War',
+    'Generation',
+    'Incursion',
+    'Ancient',
+    'Rivals',
+    'Legion',
+    'Commando',
+    'Outworld',
+    'Enforcer',
+    'Supreme'
+  ];
+  static List typeOptions = ['AOE', 'Tank', 'Support', 'Striker', 'Stealth', 'Rogue', 'Demolisher', 'Field', 'Hunter'];
+  static List powerOriginOptions = ["Cabal", "Technology", "Mystical", "Ability", "Transcendent", "Empirical"];
+
+  static List groupImages = [
+    'assets/group/atomic-slashes.png',
+    'assets/group/cursed-star.png',
+    'assets/group/divided-spiral.png',
+    'assets/group/gothic-cross.png',
+    'assets/group/lamprey-mouth.png',
+    'assets/group/maze-cornea.png',
+    'assets/group/maze-saw.png',
+    'assets/group/mighty-spanner.png',
+    'assets/group/orbital.png',
+    'assets/group/spiky-field.png',
+    'assets/group/triple-plier.png',
+    'assets/group/triple-yin.png',
+    'assets/group/striped-sun.png',
+  ];
+
+  static List typeImages = [
+    'assets/type/alien-stare.png',
+    'assets/type/android-mask.png',
+    'assets/type/cowled.png',
+    'assets/type/diablo-skull.png',
+    'assets/type/elf-helmet.png',
+    'assets/type/horned-reptile.png',
+    'assets/type/mecha-mask.png',
+    'assets/type/spark-spirit.png',
+    'assets/type/spy.png',
+  ];
+  static List powerOriginImages = [
+    'assets/powerOrigin/cubeforce.png',
+    'assets/powerOrigin/dream-catcher.png',
+    'assets/powerOrigin/freedom-dove.png',
+    'assets/powerOrigin/holy-symbol.png',
+    'assets/powerOrigin/slumbering-sanctuary.png',
+    'assets/powerOrigin/warlock-eye.png',
+  ];
+
+  String genderWord() {
+    return genderOptions[gender];
+  }
+
+  String groupWord() {
+    return groupOptions[group];
+  }
+
+  String typeWord() {
+    return typeOptions[type];
+  }
+
+  String powerOriginWord() {
+    return powerOriginOptions[powerOrigin];
+  }
+
+  String groupImage() {
+    return groupImages[group];
+  }
+
+  String typeImage() {
+    return typeImages[type];
+  }
+
+  String powerOriginImage() {
+    return powerOriginImages[powerOrigin];
+  }
 
   Map<String, IconData> groupType({color = Colors.black}) => {
         "car": Icons.directions_car,
@@ -251,19 +322,51 @@ Future<void> deleteImageFromDatabase(String path) async {
 }
 
 Future addCharacter(Character character) async {
-  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').add(character.toJson());
+  await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .add(character.toJson());
   Fluttertoast.showToast(
-      msg: "Character Added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
+      msg: "Character Added",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blue,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 Future setCharacter(Character character) async {
-  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).set(character.toJson());
+  await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .doc(character.documentId)
+      .set(character.toJson());
   Fluttertoast.showToast(
-      msg: "Character Set", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
+      msg: "Character Set",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blue,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 Future deleteCharacter(Character character) async {
-  await FirebaseFirestore.instance.collection('userCharacters').doc(FirebaseAuth.instance.currentUser!.uid).collection('characters').doc(character.documentId).delete();
+  await FirebaseFirestore.instance
+      .collection('userCharacters')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('characters')
+      .doc(character.documentId)
+      .delete();
   Fluttertoast.showToast(
-      msg: "Character Deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
+      msg: "Character Deleted",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blue,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

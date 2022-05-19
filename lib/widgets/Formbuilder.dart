@@ -30,19 +30,6 @@ class _Formbuilder extends State<Formbuilder> {
   //final _formKey = GlobalKey<FormState>(debugLabel: '_GuestBookState');
   final _formKey = GlobalKey<FormBuilderState>();
 
-  List genderOptions = ['male', 'female', 'other'];
-  List groupOptions = ['Frontier', 'Stars', 'Mystery', 'War', 'Generation', 'Clandestine', 'Commando', 'Enforcer'];
-  List typeOptions = [
-    'AOE',
-    'Tank',
-    'Support',
-    'Striker',
-    'Defense',
-    'Stealth',
-    'Rogue',
-  ];
-  List powerOriginOptions = ["Cabal", "Technology", "Mystical", "Ability", "Transcendent", "Empirical"];
-
   XFile? _pickedFile;
   CroppedFile? _croppedFile;
   CroppedFile? _smallerCroppedFile;
@@ -74,10 +61,10 @@ class _Formbuilder extends State<Formbuilder> {
               CustomTextField('appearance', widget.originalCharacter.appearance),
               CustomTextField('frame', widget.originalCharacter.frame),
               CustomTextField('outfit', widget.originalCharacter.outfit),
-              ChoiceChip('group', groupOptions, widget.originalCharacter.group),
-              ChoiceChip('type', typeOptions, widget.originalCharacter.type),
-              ChoiceChip('gender', genderOptions, widget.originalCharacter.gender),
-              ChoiceChip('powerOrigin', powerOriginOptions, widget.originalCharacter.powerOrigin),
+              ChoiceChip('group', Character.groupOptions, widget.originalCharacter.group),
+              ChoiceChip('type', Character.typeOptions, widget.originalCharacter.type),
+              ChoiceChip('gender', Character.genderOptions, widget.originalCharacter.gender),
+              ChoiceChip('powerOrigin', Character.powerOriginOptions, widget.originalCharacter.powerOrigin),
               FormBuilderSlider(
                 name: 'slider',
                 validator: FormBuilderValidators.compose([

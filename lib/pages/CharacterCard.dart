@@ -1,4 +1,5 @@
 import 'package:characrea/pages/test_tab_transition.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,6 +7,22 @@ import '../provider/CharacterListProvider.dart';
 
 Widget CharacterCard(BuildContext context, Character character) {
   // final groupType = character.groupType();
+
+  Widget DisplayImage(String smallImageUrl) {
+    return Image.network(
+      smallImageUrl,
+      width: 70,
+      height: 70,
+    );
+  }
+
+  Widget DisplayBlankImage() {
+    return Image.asset(
+      'assets/egg-eye.png',
+      width: 70,
+      height: 70,
+    );
+  }
 
   return Container(
     child: GestureDetector(
@@ -35,19 +52,14 @@ Widget CharacterCard(BuildContext context, Character character) {
                       Spacer(),
                     ]),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          character.description,
-                          style: new TextStyle(fontSize: 35.0),
-                        ),
-                        Spacer(),
-                        // Icon(groupType[character.group]),
-                      ],
-                    ),
-                  )
+                  FutureBuilder(
+                      future: Future.wait([readImageFromDatabase(character.facePhoto)]),
+                      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                        if (snapshot.hasData) {
+                          return DisplayImage(snapshot.data![0]);
+                        }
+                        return DisplayBlankImage();
+                      }),
                 ],
               ),
             ),

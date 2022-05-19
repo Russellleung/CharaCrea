@@ -16,8 +16,6 @@ class CharacterEditPage extends StatefulWidget {
   _CharacterEditPage createState() => _CharacterEditPage();
 }
 
-// will have to be stateful. save character locally so other places can't change
-// should have 2 character states. 1 original and another will be changed so can go back
 class _CharacterEditPage extends State<CharacterEditPage> {
   Character editedCharacter = Character();
 
