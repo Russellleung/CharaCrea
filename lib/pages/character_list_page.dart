@@ -34,7 +34,9 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    context.read<CharacterListProvider>().setCharacterProvider();
+    context.read<CharacterListProvider>().setCharacterProvider(() {
+      selectedResultsList();
+    });
   }
 
   @override
@@ -83,7 +85,9 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
     return Container(
       child: Column(
         children: <Widget>[
-          Text("search characters", style: TextStyle(fontSize: 20)),
+          AppBar(
+            title: Text("search characters"),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
             child: TextField(
@@ -96,42 +100,44 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
             itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
             itemBuilder: (BuildContext context, int index) => CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
           )),
-          Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
-          ElevatedButton(
-            onPressed: () {
-              _displayDialog(context, genders, (List genderList) {
-                setState(() {
-                  genders = genderList;
-                });
-              }, () {
-                selectedResultsList();
-              });
-            },
-            child: Text("Show Dialog"),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: false).push(
-                MaterialPageRoute(builder: (context) {
-                  return Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    appBar: AppBar(
-                      title: const Text('Form'),
-                    ),
-                    body: Formbuilder(
-                      originalCharacter: Character(),
-                      callback: (Character character) {
-                        //TODO: when add, need to apply filters
-                        //selectedResultsList();
-                      },
-                    ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
+              ElevatedButton(
+                onPressed: () {
+                  _displayDialog(context, genders, (List genderList) {
+                    setState(() {
+                      genders = genderList;
+                    });
+                  }, () {
+                    selectedResultsList();
+                  });
+                },
+                child: Text("Sieve"),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: false).push(
+                    MaterialPageRoute(builder: (context) {
+                      return Scaffold(
+                        resizeToAvoidBottomInset: false,
+                        appBar: AppBar(
+                          title: const Text('Form'),
+                        ),
+                        body: Formbuilder(
+                          originalCharacter: Character(),
+                          callback: (Character character) {},
+                        ),
+                      );
+                    }),
                   );
-                }),
-              );
-            },
-            tooltip: 'Add Item',
-            child: Icon(Icons.add),
-          )
+                },
+                tooltip: 'Add Item',
+                child: Icon(Icons.add),
+              )
+            ],
+          ),
         ],
       ),
     );

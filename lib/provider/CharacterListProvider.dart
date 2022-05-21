@@ -99,10 +99,10 @@ class CharacterListProvider with ChangeNotifier {
     });
   }
 
-  Future<void> setCharacterProvider() async {
+  Future<void> setCharacterProvider(Function callback) async {
     String id = FirebaseAuth.instance.currentUser!.uid;
     characterListSubscription =
-        FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').snapshots().listen((snapshot) {
+        FirebaseFirestore.instance.collection('userCharacters').doc(id).collection('characters').orderBy("group").snapshots().listen((snapshot) {
       _allCharacters = [];
       for (final document in snapshot.docs) {
         _allCharacters.add(Character(
@@ -126,8 +126,9 @@ class CharacterListProvider with ChangeNotifier {
           hair: document.data()["hair"],
         ));
       }
-      selectedCharacters = _allCharacters;
-      filteredCharacters = selectedCharacters;
+      // selectedCharacters = _allCharacters;
+      // filteredCharacters = selectedCharacters;
+      callback();
 
       notifyListeners();
       // _characterListSubscription?.cancel();
