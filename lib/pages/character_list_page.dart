@@ -82,7 +82,76 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              _displayDialog(context, genders, (List genderList) {
+                setState(() {
+                  genders = genderList;
+                });
+              }, () {
+                selectedResultsList();
+              });
+            },
+            child: Text("Sieve"),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: false).push(
+                MaterialPageRoute(builder: (context) {
+                  return Scaffold(
+                    resizeToAvoidBottomInset: false,
+                    appBar: AppBar(
+                      title: const Text('Form'),
+                    ),
+                    body: Formbuilder(
+                      originalCharacter: Character(),
+                      callback: (Character character) {},
+                    ),
+                  );
+                }),
+              );
+            },
+            tooltip: 'Add Item',
+            child: Icon(Icons.add),
+          )
+        ],
+      ),
+      appBar: AppBar(
+        title: Text("search characters"),
+      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
+                  ),
+                ),
+                Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
+              itemBuilder: (BuildContext context, int index) =>
+                  CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Container(
       child: Column(
         children: <Widget>[
           AppBar(
