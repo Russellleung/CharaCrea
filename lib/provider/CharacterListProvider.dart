@@ -46,6 +46,20 @@ class CharacterListProvider with ChangeNotifier {
 
   List<Character> get filteredCharacters => _filteredCharacters;
 
+  List<Character> _selectedCharacters = [];
+
+  List<Character> get selectedCharacters => _selectedCharacters;
+
+  set selectedCharacters(List<Character> characterlist) {
+    _selectedCharacters = List.from(characterlist);
+    notifyListeners();
+  }
+
+  void addSelectedCharacter(Character character) {
+    _selectedCharacters.add(character);
+    notifyListeners();
+  }
+
   set filteredCharacters(List<Character> characterlist) {
     _filteredCharacters = List.from(characterlist);
     notifyListeners();
@@ -112,7 +126,8 @@ class CharacterListProvider with ChangeNotifier {
           hair: document.data()["hair"],
         ));
       }
-      filteredCharacters = _allCharacters;
+      selectedCharacters = _allCharacters;
+      filteredCharacters = selectedCharacters;
 
       notifyListeners();
       // _characterListSubscription?.cancel();

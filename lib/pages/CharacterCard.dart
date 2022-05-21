@@ -90,6 +90,7 @@ _displayDialog(BuildContext context, Character character) async {
                 deleteImageFromDatabase(character.displayPhoto);
               }
               deleteCharacter(character);
+              //TODO: when delete, need to apply filters
               Navigator.of(context).pop();
             },
             child: Text(
