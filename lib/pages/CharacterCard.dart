@@ -33,26 +33,28 @@ Widget CharacterCard(BuildContext context, Character character) {
       child: Card(
         child: InkWell(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(2.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                    child: Row(children: <Widget>[
-                      Text(
-                        character.name,
-                        style: GoogleFonts.seymourOne(fontSize: 20.0),
-                      ),
-                      Spacer(),
-                    ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
-                    child: Row(children: <Widget>[
-                      Text(character.power),
-                      Spacer(),
-                    ]),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                  //   child: Row(children: <Widget>[
+                  //     Text(
+                  //       character.name,
+                  //       style: GoogleFonts.seymourOne(fontSize: 20.0),
+                  //     ),
+                  //     Spacer(),
+                  //   ]),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
+                  //   child: Row(children: <Widget>[
+                  //     Text(character.power),
+                  //     Spacer(),
+                  //   ]),
+                  // ),
+                  Text(character.name),
                   FutureBuilder(
                       future: Future.wait([readImageFromDatabase(character.facePhoto)]),
                       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {

@@ -169,12 +169,20 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
-                  ),
-                ),
+                    child: GridView.builder(
+                  padding: EdgeInsets.all(12.0),
+                  itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
+                  itemBuilder: (BuildContext context, int index) =>
+                      CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
+                )
+
+                    // ListView.builder(
+                    //   itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
+                    //   itemBuilder: (BuildContext context, int index) =>
+                    //       CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
+                    // ),
+                    ),
               ],
             ),
           ),
