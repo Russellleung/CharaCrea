@@ -54,29 +54,109 @@ class _CharacterFullScreenPage extends State<CharacterFullScreenPage> {
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: screenWidth,
-            maxHeight: screenHeight,
+            maxHeight: screenWidth * (4 / 3),
           ),
           child: Stack(
-            alignment: AlignmentDirectional.bottomEnd,
+            alignment: AlignmentDirectional.center,
             children: [
               Image.network(bigImageUrl),
-              Wrap(
-                direction: Axis.vertical,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "hi",
-                    style: TextStyle(color: Colors.deepOrange),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    "hi",
-                    style: TextStyle(color: Colors.deepOrange),
-                  ),
-                  Text(
-                    "hi",
-                    style: TextStyle(color: Colors.deepOrange),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                        Text(
+                          "hi",
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
+              // Wrap(
+              //   direction: Axis.vertical,
+              //   children: [
+              //     Text(
+              //       "hi",
+              //       style: TextStyle(color: Colors.deepOrange),
+              //     ),
+              //     Text(
+              //       "hi",
+              //       style: TextStyle(color: Colors.deepOrange),
+              //     ),
+              //     Text(
+              //       "hi",
+              //       style: TextStyle(color: Colors.deepOrange),
+              //     ),
+              //     Wrap(
+              //       direction: Axis.horizontal,
+              //       children: [
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //       ],
+              //     ),
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //         SizedBox(width: 50),
+              //         Text(
+              //           "hi",
+              //           style: TextStyle(color: Colors.deepOrange),
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
