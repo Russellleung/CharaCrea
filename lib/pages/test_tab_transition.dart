@@ -60,24 +60,8 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Container(
-          //   color: Colors.pink,
-          // ),
-          // Container(
-          //   color: Colors.blue,
-          // ),
-          // Container(
-          //   color: Colors.deepPurple,
-          // )
-          CharacterFullScreenPage(title: "title", message: "message"),
+          CharacterFullScreenPage(character: widget.character),
           CharacterDetailedPage(character: widget.character),
-          // CharacterEditPage(
-          //     originalCharacter: widget.character,
-          //     callback: (character) {
-          //       setState(() {
-          //         widget.character = character;
-          //       });
-          //     }),
           Formbuilder(
             originalCharacter: widget.character,
             callback: (Character character) {

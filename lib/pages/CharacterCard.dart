@@ -27,6 +27,7 @@ Widget CharacterCard(BuildContext context, Character character) {
   return Container(
     child: GestureDetector(
       onLongPress: () {
+        FocusManager.instance.primaryFocus?.unfocus();
         _displayDialog(context, character);
       },
       child: Card(
@@ -64,6 +65,7 @@ Widget CharacterCard(BuildContext context, Character character) {
               ),
             ),
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               Navigator.of(context, rootNavigator: false).push(
                 MaterialPageRoute(builder: (context) {
                   return TabTransition(character: character);

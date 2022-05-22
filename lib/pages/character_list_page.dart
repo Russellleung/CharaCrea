@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import '../Themes.dart';
 import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
 import 'package:intl/intl.dart';
@@ -82,74 +83,107 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              _displayDialog(context, genders, (List genderList) {
-                setState(() {
-                  genders = genderList;
-                });
-              }, () {
-                selectedResultsList();
-              });
-            },
-            child: Text("Sieve"),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: false).push(
-                MaterialPageRoute(builder: (context) {
-                  return Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    appBar: AppBar(
-                      title: const Text('Form'),
-                    ),
-                    body: Formbuilder(
-                      originalCharacter: Character(),
-                      callback: (Character character) {},
-                    ),
-                  );
-                }),
-              );
-            },
-            tooltip: 'Add Item',
-            child: Icon(Icons.add),
-          )
-        ],
-      ),
-      appBar: AppBar(
-        title: Text("search characters"),
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
-            child: Row(
+    return WillPopScope(
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            backgroundColor: AppThemes.pageColor,
+            resizeToAvoidBottomInset: false,
+            floatingActionButton: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
+                ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(AppThemes.buttonColor)),
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    _displayDialog(context, genders, (List genderList) {
+                      setState(() {
+                        genders = genderList;
+                      });
+                    }, () {
+                      selectedResultsList();
+                    });
+                  },
+                  child: Text("Sieve"),
+                ),
+                const SizedBox(width: 20),
+                FloatingActionButton(
+                  backgroundColor: AppThemes.buttonColor,
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    Navigator.of(context, rootNavigator: false).push(
+                      MaterialPageRoute(builder: (context) {
+                        return Scaffold(
+                          resizeToAvoidBottomInset: false,
+                          appBar: AppBar(
+                            title: const Text('Form'),
+                          ),
+                          body: Formbuilder(
+                            originalCharacter: Character(),
+                            callback: (Character character) {},
+                          ),
+                        );
+                      }),
+                    );
+                  },
+                  tooltip: 'Add Item',
+                  child: Icon(Icons.add),
+                )
+              ],
+            ),
+            appBar: AppBar(
+              title: Text("search characters"),
+              backgroundColor: AppThemes.appbarColor,
+            ),
+            body: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          cursorColor: AppThemes.buttonColor,
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: AppThemes.buttonColor,
+                            ),
+                            // enabledBorder: UnderlineInputBorder(
+                            //   borderSide: BorderSide(color: AppThemes.buttonColor),
+                            // ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppThemes.buttonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        context.watch<CharacterListProvider>().filteredCharacters.length.toString(),
+                        textScaleFactor: 2,
+                        style: TextStyle(fontWeight: FontWeight.bold, color: AppThemes.buttonColor),
+                      ),
+                    ],
                   ),
                 ),
-                Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
+                  ),
+                ),
               ],
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+        onWillPop: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
+          print("hi");
+          return false;
+        });
 
     Container(
       child: Column(
