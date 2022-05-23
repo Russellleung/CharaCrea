@@ -6,6 +6,7 @@ import 'package:characrea/Themes.dart';
 import 'package:characrea/effects/distortion.dart';
 import 'package:characrea/pages/second_screen.dart';
 import 'package:characrea/pages/test_upload_image.dart';
+import 'package:characrea/pages/third_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
@@ -36,10 +37,7 @@ class _RootPage extends State<RootPage> {
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
       MyHomePage(),
-      SecondScreen(
-        message: '',
-        title: '',
-      ),
+      CollapsingList(),
       CharacterCarousel(),
       CropperImage(title: "title"),
       RippleTest(

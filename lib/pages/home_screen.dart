@@ -48,27 +48,27 @@ class _DefaultPageState extends State<DefaultPage> with AutomaticKeepAliveClient
             Count(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (context) {
-                    return ThirdScreen(
-                      message: '',
-                      title: '',
-                    );
-                  }),
-                );
+                // Navigator.of(context, rootNavigator: true).push(
+                //   MaterialPageRoute(builder: (context) {
+                //     return ThirdScreen(
+                //       message: '',
+                //       title: '',
+                //     );
+                //   }),
+                // );
               },
               child: Text('Launch screen without nav bar'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context, rootNavigator: false).push(
-                  MaterialPageRoute(builder: (context) {
-                    return ThirdScreen(
-                      message: '',
-                      title: '',
-                    );
-                  }),
-                );
+                // Navigator.of(context, rootNavigator: false).push(
+                //   MaterialPageRoute(builder: (context) {
+                //     return ThirdScreen(
+                //       message: '',
+                //       title: '',
+                //     );
+                //   }),
+                // );
               },
               child: Text('Launch screen with nav bar'),
             ),

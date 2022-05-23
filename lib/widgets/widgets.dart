@@ -53,14 +53,15 @@ class IconAndDetail extends StatelessWidget {
 }
 
 class IconImageAndDetail extends StatelessWidget {
-  const IconImageAndDetail(this.imagePath, this.detail);
+  const IconImageAndDetail(this.imagePath, this.detail, [this.padding = 8.0]);
 
   final String imagePath;
   final String detail;
+  final double padding;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           children: [
             Image.asset(

@@ -95,11 +95,10 @@ class _RippleEffectState extends State<RippleEffect> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    //I added this
-    _controller.dispose();
     if (widget.rippleController != null) {
       widget.rippleController!.removeListener(_onExternalTouch);
     }
+    _controller.dispose();
     _streamSubscription.cancel();
     _process.stop();
     super.dispose();
@@ -115,7 +114,8 @@ class _RippleEffectState extends State<RippleEffect> with SingleTickerProviderSt
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => Future.delayed(
+          WidgetsBinding.instance.addPostFrameCallback((_) =>
+              Future.delayed(
                 Duration(milliseconds: 500),
                 _startProcess,
               ));
@@ -154,8 +154,10 @@ class _RippleEffectState extends State<RippleEffect> with SingleTickerProviderSt
       data.width,
       data.height,
       ui.PixelFormat.rgba8888,
-      (imgRes) {
-        setState(() => this._image = imgRes);
+          (imgRes) {
+        if (this.mounted) {
+          setState(() => this._image = imgRes);
+        }
       },
     );
   }

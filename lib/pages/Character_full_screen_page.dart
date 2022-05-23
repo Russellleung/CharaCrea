@@ -63,26 +63,38 @@ class _CharacterFullScreenPage extends State<CharacterFullScreenPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "hi",
-                          style: TextStyle(color: Colors.deepOrange),
-                        ),
-                        Text(
-                          "hi",
-                          style: TextStyle(color: Colors.deepOrange),
-                        ),
-                        Text(
-                          "hi",
-                          style: TextStyle(color: Colors.deepOrange),
-                        ),
-                      ],
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "hiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                        style: TextStyle(color: Colors.deepOrange),
+                      ),
                     ),
                   ),
+
+                  // Padding(
+                  //   padding: EdgeInsets.all(10),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Flexible(
+                  //         child: Text(
+                  //           "hiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                  //           style: TextStyle(color: Colors.deepOrange),
+                  //         ),
+                  //       ),
+                  //       Text(
+                  //         "hi",
+                  //         style: TextStyle(color: Colors.deepOrange),
+                  //       ),
+                  //       Text(
+                  //         "hi",
+                  //         style: TextStyle(color: Colors.deepOrange),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Row(
@@ -105,6 +117,7 @@ class _CharacterFullScreenPage extends State<CharacterFullScreenPage> {
                   ),
                 ],
               ),
+
               // Wrap(
               //   direction: Axis.vertical,
               //   children: [

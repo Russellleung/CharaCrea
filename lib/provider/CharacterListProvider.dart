@@ -219,7 +219,7 @@ class Character {
         documentId: documentId);
   }
 
-  static List genderOptions = ['male', 'female', 'other'];
+  static List genderOptions = ['Male', 'Female', 'Other'];
   static List groupOptions = [
     'Frontier',
     'Stars',

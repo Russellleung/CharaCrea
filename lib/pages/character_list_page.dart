@@ -30,6 +30,9 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
   TextEditingController _searchController = TextEditingController();
   bool keepAlive = true;
   List genders = [];
+  List groups = [];
+  List powerOrigins = [];
+  List types = [];
 
   @override
   void initState() {
@@ -74,7 +77,10 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
   selectedResultsList() {
     context.read<CharacterListProvider>().selectedCharacters = [];
     for (var character in context.read<CharacterListProvider>().allCharacters) {
-      if (genders.contains(character.gender) || genders.isEmpty == true) {
+      if ((genders.contains(character.gender) || genders.isEmpty == true) &&
+          (groups.contains(character.group) || groups.isEmpty == true) &&
+          (powerOrigins.contains(character.powerOrigin) || powerOrigins.isEmpty == true) &&
+          (types.contains(character.type) || types.isEmpty == true)) {
         context.read<CharacterListProvider>().addSelectedCharacter(character);
       }
     }
@@ -96,13 +102,28 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(AppThemes.buttonColor)),
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    _displayDialog(context, genders, (List genderList) {
-                      setState(() {
-                        genders = genderList;
-                      });
-                    }, () {
-                      selectedResultsList();
-                    });
+                    _displayDialog(
+                        context,
+                        (
+                          List genderList,
+                          List groupList,
+                          List typeList,
+                          List powerOriginList,
+                        ) {
+                          setState(() {
+                            genders = genderList;
+                            groups = groupList;
+                            types = typeList;
+                            powerOrigins = powerOriginList;
+                          });
+                        },
+                        genders,
+                        powerOrigins,
+                        groups,
+                        types,
+                        () {
+                          selectedResultsList();
+                        });
                   },
                   child: Text("Sieve"),
                 ),
@@ -150,9 +171,6 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                               Icons.search,
                               color: AppThemes.buttonColor,
                             ),
-                            // enabledBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: AppThemes.buttonColor),
-                            // ),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: AppThemes.buttonColor),
                             ),
@@ -175,83 +193,15 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
                   itemBuilder: (BuildContext context, int index) =>
                       CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
-                )
-
-                    // ListView.builder(
-                    //   itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
-                    //   itemBuilder: (BuildContext context, int index) =>
-                    //       CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
-                    // ),
-                    ),
+                )),
               ],
             ),
           ),
         ),
         onWillPop: () async {
           FocusManager.instance.primaryFocus?.unfocus();
-          print("hi");
           return false;
         });
-
-    Container(
-      child: Column(
-        children: <Widget>[
-          AppBar(
-            title: Text("search characters"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
-            ),
-          ),
-          Expanded(
-              child: ListView.builder(
-            itemCount: context.watch<CharacterListProvider>().filteredCharacters.length,
-            itemBuilder: (BuildContext context, int index) => CharacterCard(context, context.read<CharacterListProvider>().filteredCharacters[index]),
-          )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(context.watch<CharacterListProvider>().filteredCharacters.length.toString()),
-              ElevatedButton(
-                onPressed: () {
-                  _displayDialog(context, genders, (List genderList) {
-                    setState(() {
-                      genders = genderList;
-                    });
-                  }, () {
-                    selectedResultsList();
-                  });
-                },
-                child: Text("Sieve"),
-              ),
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: false).push(
-                    MaterialPageRoute(builder: (context) {
-                      return Scaffold(
-                        resizeToAvoidBottomInset: false,
-                        appBar: AppBar(
-                          title: const Text('Form'),
-                        ),
-                        body: Formbuilder(
-                          originalCharacter: Character(),
-                          callback: (Character character) {},
-                        ),
-                      );
-                    }),
-                  );
-                },
-                tooltip: 'Add Item',
-                child: Icon(Icons.add),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -260,51 +210,63 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
 
 _displayDialog(
   BuildContext context,
+  Function setAllOptions,
   List genders,
-  Function setGender,
+  List powerOrigins,
+  List groups,
+  List types,
   Function setSelectedCharacters,
 ) async {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Welcome'),
+        insetPadding: EdgeInsets.all(10),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Sieve'),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.cancel,
+                  color: AppThemes.buttonColor,
+                  size: 40,
+                ))
+          ],
+        ),
         content: selectionView(
           genders: genders,
-          setGender: setGender,
+          powerOrigins: powerOrigins,
+          types: types,
+          groups: groups,
+          setAllOptions: setAllOptions,
           setSelectedCharacters: setSelectedCharacters,
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'YES',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'NO',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
       );
     },
   );
 }
 
 class selectionView extends StatefulWidget {
+  Function setAllOptions;
   List genders;
-  Function setGender;
+  List powerOrigins;
+  List groups;
+  List types;
   Function setSelectedCharacters;
 
-  selectionView({Key? key, required this.genders, required this.setGender, required this.setSelectedCharacters}) : super(key: key);
+  selectionView(
+      {Key? key,
+      required this.genders,
+      required this.groups,
+      required this.types,
+      required this.powerOrigins,
+      required this.setAllOptions,
+      required this.setSelectedCharacters})
+      : super(key: key);
 
   @override
   _selectionView createState() => _selectionView();
@@ -315,26 +277,18 @@ class _selectionView extends State<selectionView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         FormBuilder(
           key: _formKey,
           child: Column(
             children: <Widget>[
               FilterChip("gender", Character.genderOptions, widget.genders),
-              FormBuilderFilterChip(
-                name: 'filter_chip',
-                decoration: InputDecoration(
-                  labelText: 'Select many options',
-                ),
-                options: [
-                  FormBuilderFieldOption(value: 'Test', child: Text('Test')),
-                  FormBuilderFieldOption(value: 'Test 1', child: Text('Test 1')),
-                  FormBuilderFieldOption(value: 'Test 2', child: Text('Test 2')),
-                  FormBuilderFieldOption(value: 'Test 3', child: Text('Test 3')),
-                  FormBuilderFieldOption(value: 'Test 4', child: Text('Test 4')),
-                ],
-              ),
+              FilterChip("type", Character.typeOptions, widget.types),
+              FilterChip("powerOrigin", Character.powerOriginOptions, widget.powerOrigins),
+              FilterChip("group", Character.groupOptions, widget.groups),
             ],
           ),
         ),
@@ -342,7 +296,7 @@ class _selectionView extends State<selectionView> {
           children: <Widget>[
             Expanded(
               child: MaterialButton(
-                color: Theme.of(context).colorScheme.secondary,
+                color: AppThemes.buttonColor,
                 child: Text(
                   "Submit",
                   style: TextStyle(color: Colors.white),
@@ -350,9 +304,10 @@ class _selectionView extends State<selectionView> {
                 onPressed: () {
                   _formKey.currentState?.save();
                   if (_formKey.currentState!.validate()) {
-                    print(_formKey.currentState?.value);
-                    widget.setGender(_formKey.currentState?.value['gender']);
+                    widget.setAllOptions(_formKey.currentState?.value['gender'], _formKey.currentState?.value['group'],
+                        _formKey.currentState?.value['type'], _formKey.currentState?.value['powerOrigin']);
                     widget.setSelectedCharacters();
+                    Navigator.of(context).pop();
                   } else {
                     print("validation failed");
                   }
@@ -362,7 +317,7 @@ class _selectionView extends State<selectionView> {
             SizedBox(width: 20),
             Expanded(
               child: MaterialButton(
-                color: Theme.of(context).colorScheme.secondary,
+                color: AppThemes.buttonColor,
                 child: Text(
                   "Reset",
                   style: TextStyle(color: Colors.white),
@@ -371,6 +326,9 @@ class _selectionView extends State<selectionView> {
                   //_formKey.currentState?.reset();
                   _formKey.currentState?.patchValue({
                     'gender': [],
+                    'group': [],
+                    'powerOrigin': [],
+                    'type': [],
                   });
                 },
               ),
@@ -378,7 +336,7 @@ class _selectionView extends State<selectionView> {
           ],
         )
       ],
-    );
+    ));
   }
 }
 

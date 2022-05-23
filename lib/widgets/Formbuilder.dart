@@ -584,6 +584,8 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FormBuilderTextField(
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
         initialValue: initialValue,
         name: name,
         decoration: InputDecoration(
