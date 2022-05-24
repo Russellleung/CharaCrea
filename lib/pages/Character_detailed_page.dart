@@ -75,14 +75,14 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
         decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: radius),
         child: Center(
           child: Text(
-            "Drag up Character Details",
+            "Drag up  for character details",
             style: TextStyle(color: Colors.white),
           ),
         ),
       ),
       borderRadius: radius,
       body: Column(children: [
-        IconAndDetail(Icons.access_time, widget.character.name),
+        IconAndDetail(Icons.person, widget.character.name),
         FutureBuilder(
             future: Future.wait([readImageFromDatabase(widget.character.displayPhoto)]),
             builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -91,19 +91,6 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
               }
               return DisplayBlankImage();
             }),
-        // const SizedBox(height: 8),
-
-        // const Divider(
-        //   height: 8,
-        //   thickness: 1,
-        //   indent: 8,
-        //   endIndent: 8,
-        //   color: Colors.grey,
-        // ),
-        // const Header("What we'll be doing"),
-        // const Paragraph(
-        //   'Join us for a day full of Firebase Workshops and Pizza!',
-        // ),
       ]),
     );
   }
@@ -117,7 +104,7 @@ class DetailsInSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 4,
         child: Column(
           children: [
             Container(
@@ -132,19 +119,16 @@ class DetailsInSlider extends StatelessWidget {
                 unselectedLabelColor: Colors.lightGreen,
                 tabs: [
                   Tab(
-                    icon: Icon(
-                      Icons.directions_car,
-                    ),
+                    text: "General",
                   ),
                   Tab(
-                    icon: Icon(
-                      Icons.directions_transit,
-                    ),
+                    text: "Identity",
                   ),
                   Tab(
-                    icon: Icon(
-                      Icons.directions_bike,
-                    ),
+                    text: "Style",
+                  ),
+                  Tab(
+                    text: "Class",
                   ),
                 ],
               ),
@@ -153,115 +137,113 @@ class DetailsInSlider extends StatelessWidget {
               child: TabBarView(
                 children: [
                   SingleChildScrollView(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconDetailEntry(character.typeImage(), character.typeWord(), "Type"),
-                            IconDetailEntry(character.groupImage(), character.groupWord(), "Group"),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconDetailEntry(character.powerOriginImage(), character.powerOriginWord(), "Power Origin"),
-                            DetailEntry(character.genderWord(), "Gender")
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.all(10),
+                              Expanded(
+                                flex: 1,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "detailname",
-                                      textScaleFactor: 1.8,
-                                      style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "detaildetaildetaildetaildetaildetaildetaildetail",
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
+                                    DetailEntry(character.power, "Power"),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    DetailEntry(character.race, "Race"),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [DetailEntry(character.genderWord(), "Gender")],
-                        ),
-                      ],
+                          DetailEntry(character.powerDescription, "Power Description"),
+                        ],
+                      ),
                     ),
                   ),
                   SingleChildScrollView(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "detailname",
-                                      textScaleFactor: 1.8,
-                                      style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "detaildetaildetaildetaildetaildetaildetaildetail",
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DetailEntry(character.motto, "Motto"),
+                          DetailEntry(character.catchphrase, "Catchphrase"),
+                          DetailEntry(character.description, "Description"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DetailEntry(character.hair, "Hair"),
+                                DetailEntry(character.frame, "Frame"),
+                              ],
+                            ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [DetailEntry(character.genderWord(), "Gender")],
-                        ),
-                      ],
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DetailEntry(character.appearance, "Appearance"),
+                                DetailEntry(character.outfit, "Outfit"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                IconDetailEntry(character.typeImage(), character.typeWord(), "Type"),
+                                IconDetailEntry(character.groupImage(), character.groupWord(), "Group"),
+                              ],
+                            ),
+                          ),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                IconDetailEntry(character.powerOriginImage(), character.powerOriginWord(), "Power Origin"),
+                                IconDetailEntry(character.genderImage(), character.genderWord(), "Gender"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -287,9 +269,8 @@ class DetailEntry extends StatelessWidget {
           children: [
             Text(
               detailName,
-              textScaleFactor: 1.8,
+              textScaleFactor: 1.5,
               style: TextStyle(
-                fontStyle: FontStyle.italic,
                 decoration: TextDecoration.underline,
               ),
             ),
@@ -321,9 +302,8 @@ class IconDetailEntry extends StatelessWidget {
           children: [
             Text(
               detailName,
-              textScaleFactor: 1.8,
+              textScaleFactor: 1.5,
               style: TextStyle(
-                fontStyle: FontStyle.italic,
                 decoration: TextDecoration.underline,
               ),
             ),

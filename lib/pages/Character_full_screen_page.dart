@@ -60,143 +60,81 @@ class _CharacterFullScreenPage extends State<CharacterFullScreenPage> {
             alignment: AlignmentDirectional.center,
             children: [
               Image.network(bigImageUrl),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        "hiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-                        style: TextStyle(color: Colors.deepOrange),
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    widget.character.catchphrase,
+                    style: TextStyle(color: Colors.deepOrange),
                   ),
-
-                  // Padding(
-                  //   padding: EdgeInsets.all(10),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     children: [
-                  //       Flexible(
-                  //         child: Text(
-                  //           "hiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-                  //           style: TextStyle(color: Colors.deepOrange),
-                  //         ),
-                  //       ),
-                  //       Text(
-                  //         "hi",
-                  //         style: TextStyle(color: Colors.deepOrange),
-                  //       ),
-                  //       Text(
-                  //         "hi",
-                  //         style: TextStyle(color: Colors.deepOrange),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (widget.character.motto != "") ...[
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            widget.character.motto,
+                            style: TextStyle(color: Colors.deepOrange),
+                          ),
+                        ),
+                      )
+                    ],
+                    if (widget.character.description != "") ...[
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            widget.character.description,
+                            style: TextStyle(color: Colors.deepOrange),
+                          ),
+                        ),
+                      )
+                    ],
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "hi",
+                          widget.character.name,
                           style: TextStyle(color: Colors.deepOrange),
                         ),
-                        Text(
-                          "hi",
-                          style: TextStyle(color: Colors.deepOrange),
-                        ),
-                        Text(
-                          "hi",
-                          style: TextStyle(color: Colors.deepOrange),
+                        Row(
+                          children: [
+                            Image.asset(
+                              widget.character.groupImage(),
+                              scale: 20,
+                            ),
+                            Image.asset(
+                              widget.character.genderImage(),
+                              scale: 20,
+                            ),
+                            Image.asset(
+                              widget.character.powerOriginImage(),
+                              scale: 20,
+                            ),
+                            Image.asset(
+                              widget.character.typeImage(),
+                              scale: 20,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-
-              // Wrap(
-              //   direction: Axis.vertical,
-              //   children: [
-              //     Text(
-              //       "hi",
-              //       style: TextStyle(color: Colors.deepOrange),
-              //     ),
-              //     Text(
-              //       "hi",
-              //       style: TextStyle(color: Colors.deepOrange),
-              //     ),
-              //     Text(
-              //       "hi",
-              //       style: TextStyle(color: Colors.deepOrange),
-              //     ),
-              //     Wrap(
-              //       direction: Axis.horizontal,
-              //       children: [
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //       ],
-              //     ),
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //         SizedBox(width: 50),
-              //         Text(
-              //           "hi",
-              //           style: TextStyle(color: Colors.deepOrange),
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
       ),
     );
   }
-
-  // Widget TestDisplayImage() {
-  //   final screenWidth = MediaQuery.of(context).size.width;
-  //   final screenHeight = MediaQuery.of(context).size.height;
-  //   return Padding(
-  //     padding: EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
-  //     child: Card(
-  //       elevation: 4.0,
-  //       child: Padding(
-  //         padding: EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
-  //         child: ConstrainedBox(
-  //           constraints: BoxConstraints(
-  //             maxWidth: 0.8 * screenWidth,
-  //             maxHeight: 0.7 * screenHeight,
-  //           ),
-  //           child: Image.asset('assets/codelab.png'),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -110,6 +110,9 @@ flutter:
     - spark-spirit.png
     - spy.png
     - egg-eye.png
+    - female.png
+    - male.png
+    - transportation-rings.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

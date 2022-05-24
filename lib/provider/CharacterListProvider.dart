@@ -238,6 +238,7 @@ class Character {
   static List typeOptions = ['AOE', 'Tank', 'Support', 'Striker', 'Stealth', 'Rogue', 'Demolisher', 'Field', 'Hunter'];
   static List powerOriginOptions = ["Cabal", "Technology", "Mystical", "Ability", "Transcendent", "Empirical"];
 
+  static List genderImages = ["assets/gender/male.png", "assets/gender/female.png", "assets/gender/transportation-rings.png"];
   static List groupImages = [
     'assets/group/atomic-slashes.png',
     'assets/group/cursed-star.png',
@@ -300,6 +301,10 @@ class Character {
 
   String powerOriginImage() {
     return powerOriginImages[powerOrigin];
+  }
+
+  String genderImage() {
+    return genderImages[gender];
   }
 
   Map<String, IconData> groupType({color = Colors.black}) => {
