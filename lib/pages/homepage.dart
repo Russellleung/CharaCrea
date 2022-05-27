@@ -25,7 +25,6 @@ class HomePage extends StatelessWidget {
           title: const Text('CharaCrea'),
         ),
         body: ListView(children: <Widget>[
-
           const Authentication(),
           const Divider(
             height: 8,
@@ -34,9 +33,7 @@ class HomePage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
-
           if (loginState == ApplicationLoginState.loggedIn) ...[
-
             FloatingActionButton(onPressed: () {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(builder: (context) {
