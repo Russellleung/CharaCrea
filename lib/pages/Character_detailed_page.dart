@@ -86,6 +86,7 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
         FutureBuilder(
             future: Future.wait([readImageFromDatabase(widget.character.displayPhoto)]),
             builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+              //TODO: bug here please fix
               if (snapshot.hasData) {
                 return DisplayImage(snapshot.data![0]);
               }

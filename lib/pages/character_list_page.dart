@@ -1,12 +1,10 @@
 import 'package:characrea/pages/CharacterCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import '../Themes.dart';
 import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
-import 'package:intl/intl.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -36,11 +34,11 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
 
   @override
   void initState() {
-    super.initState();
     _searchController.addListener(_onSearchChanged);
     context.read<CharacterListProvider>().setCharacterProvider(() {
       selectedResultsList();
     });
+    super.initState();
   }
 
   @override
@@ -135,9 +133,11 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                     Navigator.of(context, rootNavigator: false).push(
                       MaterialPageRoute(builder: (context) {
                         return Scaffold(
+                          backgroundColor: AppThemes.pageColor,
                           resizeToAvoidBottomInset: false,
                           appBar: AppBar(
                             title: const Text('Form'),
+                            backgroundColor: AppThemes.appbarColor,
                           ),
                           body: Formbuilder(
                             originalCharacter: Character(),

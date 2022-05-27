@@ -15,6 +15,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../Themes.dart';
+
 class CharacterListProvider with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? characterListSubscription;
   List<Character> _allCharacters = [];
@@ -353,7 +355,7 @@ Future addCharacter(Character character) async {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blue,
+      backgroundColor: AppThemes.buttonColor,
       textColor: Colors.white,
       fontSize: 16.0);
 }
@@ -370,7 +372,7 @@ Future setCharacter(Character character) async {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blue,
+      backgroundColor: AppThemes.buttonColor,
       textColor: Colors.white,
       fontSize: 16.0);
 }
@@ -387,7 +389,7 @@ Future deleteCharacter(Character character) async {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blue,
+      backgroundColor: AppThemes.buttonColor,
       textColor: Colors.white,
       fontSize: 16.0);
 }

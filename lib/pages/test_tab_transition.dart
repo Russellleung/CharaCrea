@@ -4,6 +4,7 @@ import 'package:characrea/pages/character_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import '../Themes.dart';
 import '../provider/CharacterListProvider.dart';
 import '../widgets/Formbuilder.dart';
 
@@ -40,8 +41,10 @@ class _TabTransitionState extends State<TabTransition> with TickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppThemes.pageColor,
       appBar: AppBar(
-        title: Text('Sample'),
+        title: Text("Character"),
+        backgroundColor: AppThemes.appbarColor,
         bottom: TabBar(
           controller: _tabController,
           tabs: <Widget>[
