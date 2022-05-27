@@ -110,21 +110,6 @@ class _Formbuilder extends State<Formbuilder> {
                   ChoiceChip('type', Character.typeOptions, widget.originalCharacter.type),
                   ChoiceChip('gender', Character.genderOptions, widget.originalCharacter.gender),
                   ChoiceChip('powerOrigin', Character.powerOriginOptions, widget.originalCharacter.powerOrigin),
-                  // FormBuilderSlider(
-                  //   name: 'slider',
-                  //   validator: FormBuilderValidators.compose([
-                  //     FormBuilderValidators.min(6),
-                  //   ]),
-                  //   min: 0.0,
-                  //   max: 10.0,
-                  //   initialValue: 7.0,
-                  //   divisions: 20,
-                  //   activeColor: Colors.red,
-                  //   inactiveColor: Colors.pink[100],
-                  //   decoration: const InputDecoration(
-                  //     labelText: 'Number of things',
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -284,50 +269,6 @@ class _Formbuilder extends State<Formbuilder> {
       ),
     ]);
   }
-
-  // Widget WhenHaveImage(String smallImageUrl, String bigImageUrl) {
-  //   final screenWidth = MediaQuery.of(context).size.width;
-  //   final screenHeight = MediaQuery.of(context).size.height;
-  //   return FutureBuilder(
-  //     future: Future.wait([readImageFromDatabase(widget.originalCharacter.facePhoto), readImageFromDatabase(widget.originalCharacter.displayPhoto)]),
-  //     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-  //       return Column(children: [
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
-  //           child: Card(
-  //             elevation: 4.0,
-  //             child: Padding(
-  //               padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
-  //               child: ConstrainedBox(
-  //                 constraints: BoxConstraints(
-  //                   maxWidth: 0.8 * screenWidth,
-  //                   maxHeight: 0.7 * screenHeight,
-  //                 ),
-  //                 child: Image.network(snapshot.data![0]),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 24.0 : 16.0),
-  //           child: Card(
-  //             elevation: 4.0,
-  //             child: Padding(
-  //               padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
-  //               child: ConstrainedBox(
-  //                 constraints: BoxConstraints(
-  //                   maxWidth: 0.8 * screenWidth,
-  //                   maxHeight: 0.7 * screenHeight,
-  //                 ),
-  //                 child: Image.network(snapshot.data![1]),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ]);
-  //     },
-  //   );
-  // }
 
   Widget ImagePickerAndCropper() {
     if (_smallerCroppedFile != null || _croppedFile != null || _pickedFile != null) {

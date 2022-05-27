@@ -130,7 +130,7 @@ class _CharacterListPage extends State<CharacterListPage> with AutomaticKeepAliv
                   backgroundColor: AppThemes.buttonColor,
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    Navigator.of(context, rootNavigator: true).push(
+                    Navigator.of(context, rootNavigator: false).push(
                       MaterialPageRoute(builder: (context) {
                         return Scaffold(
                           backgroundColor: AppThemes.pageColor,

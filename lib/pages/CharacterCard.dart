@@ -58,7 +58,7 @@ Widget CharacterCard(BuildContext context, Character character) {
             ),
             onTap: () {
               FocusManager.instance.primaryFocus?.unfocus();
-              Navigator.of(context, rootNavigator: true).push(
+              Navigator.of(context, rootNavigator: false).push(
                 MaterialPageRoute(builder: (context) {
                   return TabTransition(character: character);
                 }),

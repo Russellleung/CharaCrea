@@ -8,6 +8,7 @@ import 'package:characrea/main.dart';
 import 'package:characrea/pages/second_screen.dart';
 import 'package:characrea/pages/test_upload_image.dart';
 import 'package:characrea/pages/third_screen.dart';
+import 'package:characrea/src/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
@@ -38,69 +39,54 @@ class _RootPage extends State<RootPage> {
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
       MyHomePage(),
-
-      Scaffold(appBar: AppBar(title: Text("yoooo"),), body: CollapsingList(),),
+      Scaffold(
+        appBar: AppBar(
+          title: Text("yoooo"),
+        ),
+        body: CollapsingList(),
+      ),
       CharacterCarousel(),
       CropperImage(title: "title"),
-      RippleTest(
-        character: Character(),
-      ),
+      // RippleTest(
+      //   character: Character(),
+      // ),
+      Authentication(),
     ];
-
-    return MaterialApp(
-      localizationsDelegates: const [
-        FormBuilderLocalizations.delegate,
-      ],
-      theme: ThemeData(
-        buttonTheme: Theme
-            .of(context)
-            .buttonTheme
-            .copyWith(
-          highlightColor: Colors.greenAccent,
-        ),
-        primarySwatch: Colors.orange,
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme
-              .of(context)
-              .textTheme,
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    
+    return Scaffold(
+      backgroundColor: AppThemes.pageColor,
+      body: PageView(
+        controller: _pageController,
+        //The following parameter is just to prevent
+        //the user from swiping to the next page.
+        physics: NeverScrollableScrollPhysics(),
+        children: _widgetOptions,
       ),
-      home: Scaffold(
-        backgroundColor: AppThemes.pageColor,
-        body: PageView(
-          controller: _pageController,
-          //The following parameter is just to prevent
-          //the user from swiping to the next page.
-          physics: NeverScrollableScrollPhysics(),
-          children: _widgetOptions,
-        ),
 
-        // Center(
-        //   child: _widgetOptions.elementAt(_selectedIndex),
-        // ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "home",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "calendar_today"),
-            BottomNavigationBarItem(icon: Icon(Icons.message), label: "message"),
-            BottomNavigationBarItem(icon: Icon(Icons.table_chart), label: "table_chart"),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "account_circle"),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: AppThemes.buttonColor,
-          unselectedItemColor: Colors.grey,
-          onTap: (index) {
-            FocusManager.instance.primaryFocus?.unfocus();
-            setState(() {
-              _selectedIndex = index;
-              _pageController.jumpToPage(_selectedIndex);
-            });
-          },
-        ),
+      // Center(
+      //   child: _widgetOptions.elementAt(_selectedIndex),
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "home",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "calendar_today"),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: "message"),
+          BottomNavigationBarItem(icon: Icon(Icons.table_chart), label: "table_chart"),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "account_circle"),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: AppThemes.buttonColor,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          FocusManager.instance.primaryFocus?.unfocus();
+          setState(() {
+            _selectedIndex = index;
+            _pageController.jumpToPage(_selectedIndex);
+          });
+        },
       ),
     );
   }

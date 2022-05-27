@@ -14,34 +14,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationState applicationVariableState = context.watch<ApplicationState>();
-    AttendProvider attendProvider = context.watch<AttendProvider>();
-
-    int attendees = attendProvider.attendees;
-    ApplicationLoginState loginState = applicationVariableState.loginState;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('CharaCrea'),
         ),
-        body: ListView(children: <Widget>[
-          const Authentication(),
-          const Divider(
-            height: 8,
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
-          if (loginState == ApplicationLoginState.loggedIn) ...[
-            FloatingActionButton(onPressed: () {
-              Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(builder: (context) {
-                  return RootPage();
-                }),
-              );
-            })
-          ]
-        ]));
+        body: const Authentication());
   }
 }

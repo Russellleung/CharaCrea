@@ -30,10 +30,6 @@ class ApplicationState extends ChangeNotifier {
         _loginState = ApplicationLoginState.loggedIn;
       } else {
         _loginState = ApplicationLoginState.loggedOut;
-        // _guestBookMessages = [];
-        // _guestBookSubscription?.cancel();
-        // _attendingSubscription?.cancel();
-        // _attendeesSubscription?.cancel();
       }
       notifyListeners();
     });

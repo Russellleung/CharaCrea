@@ -1,6 +1,8 @@
+import 'package:characrea/pages/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../pages/rootPage.dart';
 import '../provider/homeProvider.dart';
 import '../widgets/authwidgets/emailFormWidget.dart';
@@ -74,12 +76,6 @@ class Authentication extends StatelessWidget {
           },
         );
       case ApplicationLoginState.loggedIn:
-        // Navigator.of(context, rootNavigator: true).push(
-        //   MaterialPageRoute(builder: (context) {
-        //     return RootPage();
-        //   }),
-        // );
-        //return RootPage();
         return Row(
           children: [
             Padding(
@@ -87,6 +83,7 @@ class Authentication extends StatelessWidget {
               child: StyledButton(
                 onPressed: () {
                   applicationFunctionState.signOut();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 child: const Text('LOGOUT'),
               ),

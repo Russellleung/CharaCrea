@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:characrea/pages/rootPage.dart';
 import 'package:characrea/provider/AttendProvider.dart';
 import 'package:characrea/provider/CharacterListProvider.dart';
 import 'package:characrea/provider/counter_provider.dart';
 import 'package:characrea/provider/messageProvider.dart';
 import 'package:characrea/provider/shopping_cart_provider.dart';
+import 'package:characrea/src/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -47,24 +50,42 @@ Future<void> main() async {
   );
 }
 
-class App extends StatelessWidget {
+// class Formbuilder extends StatefulWidget {
+//   Character originalCharacter;
+//   final void Function(Character character) callback;
+//
+//   Formbuilder({Key? key, required this.originalCharacter, required this.callback}) : super(key: key);
+//
+//   @override
+//   _Formbuilder createState() => _Formbuilder();
+// }
+//
+// class _Formbuilder extends State<Formbuilder> {
+
+class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
   @override
+  _App createState() => _App();
+}
+
+class _App extends State<App> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Firebase Meetup',
-      theme: ThemeData(
-        buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.greenAccent,
-            ),
-        primarySwatch: Colors.orange,
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
+        localizationsDelegates: const [
+          FormBuilderLocalizations.delegate,
+        ],
+        theme: ThemeData(
+          buttonTheme: Theme.of(context).buttonTheme.copyWith(
+                highlightColor: Colors.greenAccent,
+              ),
+          primarySwatch: Colors.orange,
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const HomePage(),
-    );
+        home: context.watch<ApplicationState>().loginState == ApplicationLoginState.loggedIn ? RootPage() : HomePage());
   }
 }
