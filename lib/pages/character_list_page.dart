@@ -277,11 +277,10 @@ class _selectionView extends State<selectionView> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        FormBuilder(
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      Expanded(
+        child: SingleChildScrollView(
+            child: FormBuilder(
           key: _formKey,
           child: Column(
             children: <Widget>[
@@ -291,52 +290,60 @@ class _selectionView extends State<selectionView> {
               FilterChip("group", Character.groupOptions, widget.groups),
             ],
           ),
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: MaterialButton(
-                color: AppThemes.buttonColor,
-                child: Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  _formKey.currentState?.save();
-                  if (_formKey.currentState!.validate()) {
-                    widget.setAllOptions(_formKey.currentState?.value['gender'], _formKey.currentState?.value['group'],
-                        _formKey.currentState?.value['type'], _formKey.currentState?.value['powerOrigin']);
-                    widget.setSelectedCharacters();
-                    Navigator.of(context).pop();
-                  } else {
-                    print("validation failed");
-                  }
-                },
+        )),
+      ),
+      Row(
+        children: <Widget>[
+          Expanded(
+            child: MaterialButton(
+              color: AppThemes.buttonColor,
+              child: Text(
+                "Submit",
+                style: TextStyle(color: Colors.white),
               ),
+              onPressed: () {
+                _formKey.currentState?.save();
+                if (_formKey.currentState!.validate()) {
+                  widget.setAllOptions(_formKey.currentState?.value['gender'], _formKey.currentState?.value['group'],
+                      _formKey.currentState?.value['type'], _formKey.currentState?.value['powerOrigin']);
+                  widget.setSelectedCharacters();
+                  Navigator.of(context).pop();
+                } else {
+                  print("validation failed");
+                }
+              },
             ),
-            SizedBox(width: 20),
-            Expanded(
-              child: MaterialButton(
-                color: AppThemes.buttonColor,
-                child: Text(
-                  "Reset",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  //_formKey.currentState?.reset();
-                  _formKey.currentState?.patchValue({
-                    'gender': [],
-                    'group': [],
-                    'powerOrigin': [],
-                    'type': [],
-                  });
-                },
+          ),
+          SizedBox(width: 20),
+          Expanded(
+            child: MaterialButton(
+              color: AppThemes.buttonColor,
+              child: Text(
+                "Reset",
+                style: TextStyle(color: Colors.white),
               ),
+              onPressed: () {
+                //_formKey.currentState?.reset();
+                _formKey.currentState?.patchValue({
+                  'gender': [],
+                  'group': [],
+                  'powerOrigin': [],
+                  'type': [],
+                });
+              },
             ),
-          ],
-        )
-      ],
-    ));
+          ),
+        ],
+      ),
+    ]);
+
+    //     Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   children: <Widget>[
+    //
+    //
+    //   ],
+    // ));
   }
 }
 
