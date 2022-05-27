@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:characrea/Themes.dart';
 import 'package:characrea/effects/distortion.dart';
+import 'package:characrea/main.dart';
 import 'package:characrea/pages/second_screen.dart';
 import 'package:characrea/pages/test_upload_image.dart';
 import 'package:characrea/pages/third_screen.dart';
@@ -37,7 +38,8 @@ class _RootPage extends State<RootPage> {
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
       MyHomePage(),
-      CollapsingList(),
+
+      Scaffold(appBar: AppBar(title: Text("yoooo"),), body: CollapsingList(),),
       CharacterCarousel(),
       CropperImage(title: "title"),
       RippleTest(
@@ -50,12 +52,17 @@ class _RootPage extends State<RootPage> {
         FormBuilderLocalizations.delegate,
       ],
       theme: ThemeData(
-        buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.greenAccent,
-            ),
+        buttonTheme: Theme
+            .of(context)
+            .buttonTheme
+            .copyWith(
+          highlightColor: Colors.greenAccent,
+        ),
         primarySwatch: Colors.orange,
         textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
+          Theme
+              .of(context)
+              .textTheme,
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

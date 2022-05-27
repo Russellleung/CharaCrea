@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/rootPage.dart';
 import '../provider/homeProvider.dart';
 import '../widgets/authwidgets/emailFormWidget.dart';
 import '../widgets/authwidgets/passwordFormwidget.dart';
@@ -36,7 +37,7 @@ class Authentication extends StatelessWidget {
                 onPressed: () {
                   applicationFunctionState.startLoginFlow();
                 },
-                child: const Text('RSVP'),
+                child: const Text('Join'),
               ),
             ),
           ],
@@ -47,7 +48,15 @@ class Authentication extends StatelessWidget {
         return PasswordForm(
           email: email!,
           login: (email, password) {
-            applicationFunctionState.signInWithEmailAndPassword(email, password, (e) => _showErrorDialog(context, 'Failed to sign in', e));
+            applicationFunctionState
+                .signInWithEmailAndPassword(email, password, (e) => _showErrorDialog(context, 'Failed to sign in', e))
+                .then((value) {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(builder: (context) {
+                  return RootPage();
+                }),
+              );
+            });
           },
         );
       case ApplicationLoginState.register:
@@ -65,6 +74,12 @@ class Authentication extends StatelessWidget {
           },
         );
       case ApplicationLoginState.loggedIn:
+        // Navigator.of(context, rootNavigator: true).push(
+        //   MaterialPageRoute(builder: (context) {
+        //     return RootPage();
+        //   }),
+        // );
+        //return RootPage();
         return Row(
           children: [
             Padding(

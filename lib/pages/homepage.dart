@@ -22,13 +22,10 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Firebase Meetup'),
+          title: const Text('CharaCrea'),
         ),
         body: ListView(children: <Widget>[
-          Image.asset('assets/codelab.png'),
-          const SizedBox(height: 8),
-          const IconAndDetail(Icons.calendar_today, 'October 30'),
-          const IconAndDetail(Icons.location_city, 'San Francisco'),
+
           const Authentication(),
           const Divider(
             height: 8,
@@ -37,20 +34,9 @@ class HomePage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
-          const Header("What we'll be doing"),
-          const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
-          ),
-          if (attendees >= 2)
-            Paragraph('$attendees people going')
-          else if (attendees == 1)
-            const Paragraph('1 person going')
-          else
-            const Paragraph('No one going'),
+
           if (loginState == ApplicationLoginState.loggedIn) ...[
-            const YesNoSelection(),
-            const Header('Discussion'),
-            GuestBook(),
+
             FloatingActionButton(onPressed: () {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(builder: (context) {
