@@ -51,7 +51,13 @@ class _Formbuilder extends State<Formbuilder> {
       delegate: SliverAppBarDelegate(
         minHeight: 20.0,
         maxHeight: 40.0,
-        child: Container(color: AppThemes.buttonColor, child: Center(child: Text(headerText))),
+        child: Container(
+            color: AppThemes.buttonColor,
+            child: Center(
+                child: Text(
+              headerText,
+              style: TextStyle(color: Colors.white),
+            ))),
       ),
     );
   }
