@@ -49,9 +49,10 @@ class _Formbuilder extends State<Formbuilder> {
     return SliverPersistentHeader(
       pinned: true,
       delegate: SliverAppBarDelegate(
-        minHeight: 20.0,
+        minHeight: 30.0,
         maxHeight: 40.0,
         child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 1.0),
             color: AppThemes.buttonColor,
             child: Center(
                 child: Text(
@@ -78,6 +79,7 @@ class _Formbuilder extends State<Formbuilder> {
                   CustomTextField('power', widget.originalCharacter.power),
                   CustomTextField('powerDescription', widget.originalCharacter.powerDescription),
                   CustomTextField('race', widget.originalCharacter.race),
+                  SizedBox(height: 15),
                 ],
               ),
             ),
@@ -88,6 +90,7 @@ class _Formbuilder extends State<Formbuilder> {
                   CustomTextField('motto', widget.originalCharacter.motto),
                   CustomTextField('catchphrase', widget.originalCharacter.catchphrase),
                   CustomTextField('description', widget.originalCharacter.description),
+                  SizedBox(height: 15),
                 ],
               ),
             ),
@@ -99,6 +102,7 @@ class _Formbuilder extends State<Formbuilder> {
                   CustomTextField('appearance', widget.originalCharacter.appearance),
                   CustomTextField('frame', widget.originalCharacter.frame),
                   CustomTextField('outfit', widget.originalCharacter.outfit),
+                  SizedBox(height: 15),
                 ],
               ),
             ),
@@ -110,6 +114,7 @@ class _Formbuilder extends State<Formbuilder> {
                   ChoiceChip('type', Character.typeOptions, widget.originalCharacter.type),
                   ChoiceChip('gender', Character.genderOptions, widget.originalCharacter.gender),
                   ChoiceChip('powerOrigin', Character.powerOriginOptions, widget.originalCharacter.powerOrigin),
+                  SizedBox(height: 15),
                 ],
               ),
             ),
