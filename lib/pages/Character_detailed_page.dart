@@ -82,7 +82,14 @@ class _CharacterDetailedPage extends State<CharacterDetailedPage> {
       ),
       borderRadius: radius,
       body: Column(children: [
-        IconAndDetail(Icons.person, widget.character.name),
+        Flexible(
+          child: Text(
+            widget.character.name,
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+          ),
+          fit: FlexFit.loose,
+        ),
         FutureBuilder(
             future: Future.wait([readImageFromDatabase(widget.character.displayPhoto)]),
             builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {

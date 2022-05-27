@@ -100,9 +100,17 @@ class _CharacterFullScreenPage extends State<CharacterFullScreenPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.character.name,
-                          style: TextStyle(color: Colors.deepOrange),
+                        Flexible(
+                          child: Text(
+                            widget.character.name,
+                            style: TextStyle(color: Colors.deepOrange),
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                          ),
+                          fit: FlexFit.loose,
+                        ),
+                        SizedBox(
+                          width: 25,
                         ),
                         Row(
                           children: [

@@ -44,7 +44,10 @@ Widget CharacterCard(BuildContext context, Character character) {
                   //     Spacer(),
                   //   ]),
                   // ),
-                  Text(character.name),
+                  Text(
+                    character.name,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   FutureBuilder(
                       future: Future.wait([readImageFromDatabase(character.facePhoto)]),
                       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
